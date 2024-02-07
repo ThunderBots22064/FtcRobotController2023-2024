@@ -1,3 +1,5 @@
+package org.firstinspires.ftc.teamcode.OldCode;
+
 import com.qualcomm.robotcore.hardware.*;
 
 // This file contains all configuration stuff
@@ -48,7 +50,7 @@ public final class CONFIG {
     }
 
     public final class CONTROL_SURFACES {
-		public final class DRONE {
+		public final class HOOK {
 	        // The motor name for the hanging mechanism
 	        public final static String HOOK_DEVICE = "thingy";
 	        public final static float HOOK_SPEED_UP = 0.90f;
@@ -71,8 +73,6 @@ public final class CONFIG {
 	        public final static int CLAW1_DIR = -1;
 	        public final static int CLAW2_DIR = 1;
 		}
-        
-
         
 		public final class ARM {
 			// Hardware Map for the Arm

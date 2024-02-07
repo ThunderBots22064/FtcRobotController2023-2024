@@ -1,15 +1,13 @@
-package club.LibertyRobotics.Drive.TeleOp;
+package org.firstinspires.ftc.teamcode.OldCode;
 
 import com.qualcomm.robotcore.eventloop.opmode.*;
 import com.qualcomm.robotcore.hardware.*;
-import org.firstinspires.ftc.robotcore.external.*;
+import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import java.lang.Math;
 
-import club.LibertyRobotics.CONFIG;
-
 @TeleOp
-public class TeleOp extends OpMode {
+public class OldTeleOp extends OpMode {
     /*** CONFIG PRESETS ***/
     float SPEED_DEF = CONFIG.DRIVETRAIN.SPEED_DEF;
     float SPEED_MIN = CONFIG.DRIVETRAIN.SPEED_MIN;
@@ -21,9 +19,9 @@ public class TeleOp extends OpMode {
     float TRIGGER_DEADZONE = CONFIG.CONTROLLER.TRIGGER_DEADZONE;
     int DRIVE_MODE = CONFIG.CONTROLLER.DRIVE_MODE;
     
-    float HOOK_SPEED_UP = CONFIG.CONTROL_SURFACES.HOOK_SPEED_UP;
-    float HOOK_SPEED_DOWN = CONFIG.CONTROL_SURFACES.HOOK_SPEED_DOWN;
-    float ARM_SPEED = CONFIG.CONTROL_SURFACES.ARM_SPEED;
+    float HOOK_SPEED_UP = CONFIG.CONTROL_SURFACES.HOOK.HOOK_SPEED_UP;
+    float HOOK_SPEED_DOWN = CONFIG.CONTROL_SURFACES.HOOK.HOOK_SPEED_DOWN;
+    float ARM_SPEED = CONFIG.CONTROL_SURFACES.ARM.ARM_SPEED;
 
     // Power Matrixes for different modes
     public final static float[][][] DRIVE_ARRAY = {
@@ -147,26 +145,26 @@ public class TeleOp extends OpMode {
         mtBR.setDirection(intToDir(CONFIG.DRIVETRAIN.BR_DIR));
 
         // Drone Servo
-        svDrone = hardwareMap.get(CRServo.class, CONFIG.CONTROL_SURFACES.DRONE_DEVICE);
-        svDrone.setDirection(intToDir(CONFIG.CONTROL_SURFACES.DRONE_DIR));    
+        svDrone = hardwareMap.get(CRServo.class, CONFIG.CONTROL_SURFACES.DRONE.DRONE_DEVICE);
+        svDrone.setDirection(intToDir(CONFIG.CONTROL_SURFACES.DRONE.DRONE_DIR));
         
         // Hook Motor
-        mtHook = hardwareMap.get(DcMotor.class, CONFIG.CONTROL_SURFACES.HOOK_DEVICE);
+        mtHook = hardwareMap.get(DcMotor.class, CONFIG.CONTROL_SURFACES.HOOK.HOOK_DEVICE);
         // Reset Hook Encoder
         mtHook.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         mtHook.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         
         // Arm Motor
-        mtArm = hardwareMap.get(DcMotor.class, CONFIG.CONTROL_SURFACES.ARM_DEVICE);
-        mtArm.setDirection(intToDir(CONFIG.CONTROL_SURFACES.ARM_DIR));
+        mtArm = hardwareMap.get(DcMotor.class, CONFIG.CONTROL_SURFACES.ARM.ARM_DEVICE);
+        mtArm.setDirection(intToDir(CONFIG.CONTROL_SURFACES.ARM.ARM_DIR));
         mtArm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         mtArm.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         
 		// Claw Servos
-        svClaw1 = hardwareMap.get(CRServo.class, CONFIG.CONTROL_SURFACES.CLAW1_DEVICE);
-        svClaw2 = hardwareMap.get(CRServo.class, CONFIG.CONTROL_SURFACES.CLAW2_DEVICE);
-        svClaw1.setDirection(intToDir(CONFIG.CONTROL_SURFACES.CLAW1_DIR));    
-        svClaw2.setDirection(intToDir(CONFIG.CONTROL_SURFACES.CLAW2_DIR));    
+        svClaw1 = hardwareMap.get(CRServo.class, CONFIG.CONTROL_SURFACES.CLAW.CLAW1_DEVICE);
+        svClaw2 = hardwareMap.get(CRServo.class, CONFIG.CONTROL_SURFACES.CLAW.CLAW2_DEVICE);
+        svClaw1.setDirection(intToDir(CONFIG.CONTROL_SURFACES.CLAW.CLAW1_DIR));
+        svClaw2.setDirection(intToDir(CONFIG.CONTROL_SURFACES.CLAW.CLAW2_DIR));
     }
 
     public void loop() {
@@ -231,16 +229,16 @@ public class TeleOp extends OpMode {
         } else {
             if (!gamepad2.b) {
                 int error = expecArmPos - armPos;
-                armProp = error * CONFIG.CONTROL_SURFACES.Kp;
-                armInteg += error * CONFIG.CONTROL_SURFACES.Ki;
-                armDeriv = (lastArmPos - armPos) * CONFIG.CONTROL_SURFACES.Kd;
+                armProp = error * CONFIG.CONTROL_SURFACES.ARM.Kp;
+                armInteg += error * CONFIG.CONTROL_SURFACES.ARM.Ki;
+                armDeriv = (lastArmPos - armPos) * CONFIG.CONTROL_SURFACES.ARM.Kd;
                 float total = armProp + armInteg + armDeriv;
-                total *= CONFIG.CONTROL_SURFACES.CLAMP;
-                if (Math.abs(total) > CONFIG.CONTROL_SURFACES.CLAMP) {
+                total *= CONFIG.CONTROL_SURFACES.ARM.CLAMP;
+                if (Math.abs(total) > CONFIG.CONTROL_SURFACES.ARM.CLAMP) {
                     if (total < 0) {    
-                        total = -CONFIG.CONTROL_SURFACES.CLAMP;
+                        total = -CONFIG.CONTROL_SURFACES.ARM.CLAMP;
                     }
-                    total = CONFIG.CONTROL_SURFACES.CLAMP;
+                    total = CONFIG.CONTROL_SURFACES.ARM.CLAMP;
                 }
                 mtArm.setPower(total);
             } else {
