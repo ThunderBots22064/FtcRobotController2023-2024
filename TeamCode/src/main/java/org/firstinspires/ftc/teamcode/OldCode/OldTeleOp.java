@@ -112,7 +112,9 @@ public class OldTeleOp extends OpMode {
     // Arm Motor and Claw Servos
     CRServo svClaw1 = null;
     CRServo svClaw2 = null;
-    DcMotor mtArm = null;
+    DcMotor mtArm1 = null;
+    DcMotor mtArm2 = null;
+    int updateTick = 0;
     int lastArmPos = 0;
     int expecArmPos = 0;
     float armProp = 0;
@@ -154,11 +156,16 @@ public class OldTeleOp extends OpMode {
         mtHook.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         mtHook.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         
-        // Arm Motor
-        mtArm = hardwareMap.get(DcMotor.class, CONFIG.CONTROL_SURFACES.ARM.ARM_DEVICE);
-        mtArm.setDirection(intToDir(CONFIG.CONTROL_SURFACES.ARM.ARM_DIR));
-        mtArm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        mtArm.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        // Arm Motors
+        mtArm1 = hardwareMap.get(DcMotor.class, CONFIG.CONTROL_SURFACES.ARM.ARM1_DEVICE);
+        mtArm1.setDirection(intToDir(CONFIG.CONTROL_SURFACES.ARM.ARM1_DIR));
+        mtArm1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        mtArm1.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+
+        mtArm2 = hardwareMap.get(DcMotor.class, CONFIG.CONTROL_SURFACES.ARM.ARM2_DEVICE);
+        mtArm2.setDirection(intToDir(CONFIG.CONTROL_SURFACES.ARM.ARM2_DIR));
+        mtArm2.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        mtArm2.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         
 		// Claw Servos
         svClaw1 = hardwareMap.get(CRServo.class, CONFIG.CONTROL_SURFACES.CLAW.CLAW1_DEVICE);
@@ -222,12 +229,14 @@ public class OldTeleOp extends OpMode {
 
         // COMMMENT THIS OUT IN AN EMERGENCY
         // /*
-        int armPos = mtArm.getCurrentPosition();
+        int armPos = (mtArm1.getCurrentPosition() + mtArm2.getCurrentPosition()) / 2;
         if (lYBox2 != 0) {
-            mtArm.setPower(-gamepad2.left_stick_y * ARM_SPEED);
+            mtArm1.setPower(-gamepad2.left_stick_y * ARM_SPEED);
+            mtArm2.setPower(-gamepad2.left_stick_y * ARM_SPEED);
             expecArmPos = armPos;
+            updateTick = 0;
         } else {
-            if (!gamepad2.b) {
+            if (!gamepad2.b && updateTick > 120) {
                 int error = expecArmPos - armPos;
                 armProp = error * CONFIG.CONTROL_SURFACES.ARM.Kp;
                 armInteg += error * CONFIG.CONTROL_SURFACES.ARM.Ki;
@@ -240,9 +249,12 @@ public class OldTeleOp extends OpMode {
                     }
                     total = CONFIG.CONTROL_SURFACES.ARM.CLAMP;
                 }
-                mtArm.setPower(total);
+                mtArm1.setPower(total);
+                mtArm2.setPower(total);
+                updateTick = 0;
             } else {
-                mtArm.setPower(0);
+                mtArm1.setPower(0);
+                mtArm2.setPower(0);
             }
         }
         // */
@@ -338,7 +350,7 @@ public class OldTeleOp extends OpMode {
         telemetry.addData("Encoder Front Right", pos[1]);
         telemetry.addData("Encoder Back Left", pos[2]);
         telemetry.addData("Encoder Back Right", pos[3]);
-        
+
         telemetry.addData("Error (R-L)", error);
         telemetry.addData("Proportion", prop);
         
@@ -388,6 +400,7 @@ public class OldTeleOp extends OpMode {
         mtBR.setPower(powMat[3] * SPEED_DEF);    
 
         // telemetry.update();
+        updateTick++;
     }
 
     // Returns an array where each value of matrixB is added to matrixA

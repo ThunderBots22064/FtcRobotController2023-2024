@@ -76,8 +76,10 @@ public final class CONFIG {
         
 		public final class ARM {
 			// Hardware Map for the Arm
-	        public final static String ARM_DEVICE = "Arm";
-	        public final static int ARM_DIR = 1;
+	        public final static String ARM1_DEVICE = "Arm1";
+            public final static String ARM2_DEVICE = "Arm2";
+	        public final static int ARM1_DIR = 1;
+            public final static int ARM2_DIR = -1;
 	        public final static float ARM_SPEED = 0.20f;
 			
 			/*--- PID Control for Arm ---*/
