@@ -63,7 +63,7 @@ public final class CONFIG {
 	        // String value that corresponds to the servo 
 			// device for the servo which launches the paper airplane
 	        public final static String DRONE_DEVICE = "arm";
-	        public final static int DRONE_DIR = 1;
+	        public final static int DRONE_DIR = -1;
 		}
 		
 		public final class CLAW {
