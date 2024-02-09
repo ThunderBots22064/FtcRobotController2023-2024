@@ -39,11 +39,11 @@ public final class CONFIG {
         public final static String BACK_RIGHT_DEVICE = "BRMotor";
         public final static String BACK_LEFT_DEVICE = "BLMotor";
 
-        // Motor directions; 1 corresponds to forward while -1 corresponds to reversed
-        public final static int FL_DIR = -1;
-        public final static int FR_DIR = -1;
-        public final static int BL_DIR =  1;
-        public final static int BR_DIR = -1;
+        // Motor directions
+        public final static DcMotorSimple.Direction FL_DIR = DcMotorSimple.Direction.REVERSE;
+        public final static DcMotorSimple.Direction FR_DIR = DcMotorSimple.Direction.REVERSE;
+        public final static DcMotorSimple.Direction BL_DIR = DcMotorSimple.Direction.FORWARD;
+        public final static DcMotorSimple.Direction BR_DIR = DcMotorSimple.Direction.REVERSE;
     }
 
     public final class CONTROL_SURFACES {
@@ -60,23 +60,23 @@ public final class CONFIG {
 	        // String value that corresponds to the servo 
 			// device for the servo which launches the paper airplane
 	        public final static String DRONE_DEVICE = "arm";
-	        public final static int DRONE_DIR = -1;
+	        public final static DcMotorSimple.Direction DRONE_DIR = DcMotorSimple.Direction.REVERSE;
 		}
 		
 		public final class CLAW {
 	        // Hardware Maps for Claw Pincer Servos
 	        public final static String CLAW1_DEVICE = "Claw1";
 	        public final static String CLAW2_DEVICE = "Claw2";
-	        public final static int CLAW1_DIR = -1;
-	        public final static int CLAW2_DIR = 1;
+	        public final static DcMotorSimple.Direction CLAW1_DIR = DcMotorSimple.Direction.REVERSE;
+	        public final static DcMotorSimple.Direction CLAW2_DIR = DcMotorSimple.Direction.FORWARD;
 		}
         
 		public final class ARM {
 			// Hardware Map for the Arm
 	        public final static String ARM1_DEVICE = "Arm1";
             public final static String ARM2_DEVICE = "Arm2";
-	        public final static int ARM1_DIR = 1;
-            public final static int ARM2_DIR = -1;
+	        public final static DcMotorSimple.Direction ARM1_DIR = DcMotorSimple.Direction.FORWARD;
+            public final static DcMotorSimple.Direction ARM2_DIR = DcMotorSimple.Direction.REVERSE;
 	        public final static float ARM_SPEED = 0.20f;
 			
 			/*--- PID Control for Arm ---*/

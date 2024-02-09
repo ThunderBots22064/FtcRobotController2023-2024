@@ -140,14 +140,14 @@ public class OldTeleOp extends OpMode {
         mtBL.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         mtBR.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         
-        mtFL.setDirection(intToDir(CONFIG.DRIVETRAIN.FL_DIR));
-        mtFR.setDirection(intToDir(CONFIG.DRIVETRAIN.FR_DIR));
-        mtBL.setDirection(intToDir(CONFIG.DRIVETRAIN.BL_DIR));
-        mtBR.setDirection(intToDir(CONFIG.DRIVETRAIN.BR_DIR));
+        mtFL.setDirection(CONFIG.DRIVETRAIN.FL_DIR);
+        mtFR.setDirection(CONFIG.DRIVETRAIN.FR_DIR);
+        mtBL.setDirection(CONFIG.DRIVETRAIN.BL_DIR);
+        mtBR.setDirection(CONFIG.DRIVETRAIN.BR_DIR);
 
         // Drone Servo
         svDrone = hardwareMap.get(CRServo.class, CONFIG.CONTROL_SURFACES.DRONE.DRONE_DEVICE);
-        svDrone.setDirection(intToDir(CONFIG.CONTROL_SURFACES.DRONE.DRONE_DIR));
+        svDrone.setDirection(CONFIG.CONTROL_SURFACES.DRONE.DRONE_DIR);
         
         // Hook Motor
         mtHook = hardwareMap.get(DcMotor.class, CONFIG.CONTROL_SURFACES.HOOK.HOOK_DEVICE);
@@ -157,20 +157,20 @@ public class OldTeleOp extends OpMode {
         
         // Arm Motors
         mtArm1 = hardwareMap.get(DcMotor.class, CONFIG.CONTROL_SURFACES.ARM.ARM1_DEVICE);
-        mtArm1.setDirection(intToDir(CONFIG.CONTROL_SURFACES.ARM.ARM1_DIR));
+        mtArm1.setDirection(CONFIG.CONTROL_SURFACES.ARM.ARM1_DIR);
         mtArm1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         mtArm1.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
         mtArm2 = hardwareMap.get(DcMotor.class, CONFIG.CONTROL_SURFACES.ARM.ARM2_DEVICE);
-        mtArm2.setDirection(intToDir(CONFIG.CONTROL_SURFACES.ARM.ARM2_DIR));
+        mtArm2.setDirection(CONFIG.CONTROL_SURFACES.ARM.ARM2_DIR);
         mtArm2.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         mtArm2.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         
 		// Claw Servos
         svClaw1 = hardwareMap.get(CRServo.class, CONFIG.CONTROL_SURFACES.CLAW.CLAW1_DEVICE);
         svClaw2 = hardwareMap.get(CRServo.class, CONFIG.CONTROL_SURFACES.CLAW.CLAW2_DEVICE);
-        svClaw1.setDirection(intToDir(CONFIG.CONTROL_SURFACES.CLAW.CLAW1_DIR));
-        svClaw2.setDirection(intToDir(CONFIG.CONTROL_SURFACES.CLAW.CLAW2_DIR));
+        svClaw1.setDirection(CONFIG.CONTROL_SURFACES.CLAW.CLAW1_DIR);
+        svClaw2.setDirection(CONFIG.CONTROL_SURFACES.CLAW.CLAW2_DIR);
     }
 
     public void loop() {
@@ -235,7 +235,7 @@ public class OldTeleOp extends OpMode {
             expecArmPos = armPos;
             updateTick = 0;
         } else {
-            if (!gamepad2.b && updateTick > 120) {
+            if (!gamepad2.b && updateTick > 30) {
                 int error = expecArmPos - armPos;
                 armProp = error * CONFIG.CONTROL_SURFACES.ARM.Kp;
                 armInteg += error * CONFIG.CONTROL_SURFACES.ARM.Ki;
@@ -251,7 +251,7 @@ public class OldTeleOp extends OpMode {
                 mtArm1.setPower(total);
                 mtArm2.setPower(total);
                 updateTick = 0;
-            } else {
+            } else if (gamepad2.b) {
                 mtArm1.setPower(0);
                 mtArm2.setPower(0);
             }
@@ -421,10 +421,6 @@ public class OldTeleOp extends OpMode {
             return 1;
         }
         return 0;
-    }
-
-    public static DcMotorSimple.Direction intToDir(int dir) {
-        return (dir == 1) ? DcMotorSimple.Direction.FORWARD : DcMotorSimple.Direction.REVERSE;
     }
     
     public static void setArr(float[] set, float[] get) {
