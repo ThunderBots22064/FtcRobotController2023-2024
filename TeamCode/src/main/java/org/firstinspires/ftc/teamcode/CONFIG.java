@@ -10,9 +10,6 @@ public final class CONFIG {
         
         // How far a trigger has to move before anything is detected
         public final static float TRIGGER_DEADZONE = 0.50f;
-        
-        // The mode for driving (0 = Mecanum)
-        public final static int DRIVE_MODE = 0;
     }
 	
     public final class DRIVETRAIN {

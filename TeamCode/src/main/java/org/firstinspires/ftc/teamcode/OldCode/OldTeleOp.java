@@ -18,16 +18,15 @@ public class OldTeleOp extends OpMode {
     
     float STICK_DEADZONE = CONFIG.CONTROLLER.STICK_DEADZONE;
     float TRIGGER_DEADZONE = CONFIG.CONTROLLER.TRIGGER_DEADZONE;
-    int DRIVE_MODE = CONFIG.CONTROLLER.DRIVE_MODE;
     
     float HOOK_SPEED_UP = CONFIG.CONTROL_SURFACES.HOOK.HOOK_SPEED_UP;
     float HOOK_SPEED_DOWN = CONFIG.CONTROL_SURFACES.HOOK.HOOK_SPEED_DOWN;
     float ARM_SPEED = CONFIG.CONTROL_SURFACES.ARM.ARM_SPEED;
 
-    // Power Matrixes for different modes
-    public final static float[][][] DRIVE_ARRAY = {
+    // Power Matrixes for driving
+    public final static float[][] DRIVE_ARRAY = {
         // Mecanum Driving
-        { // Left-Stick Up
+        // Left-Stick Up
             {1f, 1f, 
             1f, 1f},
 
@@ -50,7 +49,6 @@ public class OldTeleOp extends OpMode {
             // Left Trigger
             {-1f, 1f, 
             -1f, 1f}
-        }
     };
 
     // To make the joysticks easier to understand there are 4 boxes placed on each joystick (Imaginary)
@@ -291,29 +289,29 @@ public class OldTeleOp extends OpMode {
         // Left joystick controls horizontal strafing movement
         if (lYBox != 0) {
             if (lYBox == 1) {
-                powMat = addMat(powMat, DRIVE_ARRAY[DRIVE_MODE][0]);
+                powMat = addMat(powMat, DRIVE_ARRAY[0]);
             }
             else if (lYBox == -1) {
-                powMat = addMat(powMat, DRIVE_ARRAY[DRIVE_MODE][1]);
+                powMat = addMat(powMat, DRIVE_ARRAY[1]);
             }
         } 
         // Right joystick controls vertical forward/back movement
         if (rXBox != 0) {
             if (rXBox == 1) {
-                powMat = addMat(powMat, DRIVE_ARRAY[DRIVE_MODE][2]);
+                powMat = addMat(powMat, DRIVE_ARRAY[2]);
             }
             else if (rXBox == -1) {
-                powMat = addMat(powMat, DRIVE_ARRAY[DRIVE_MODE][3]);
+                powMat = addMat(powMat, DRIVE_ARRAY[3]);
             }
         }
 
         // Right Trigger turns clockwise
         if (gamepad1.right_trigger > TRIGGER_DEADZONE) {
-            powMat = addMat(powMat, DRIVE_ARRAY[DRIVE_MODE][4]);
+            powMat = addMat(powMat, DRIVE_ARRAY[4]);
         }
         // Left Trigger turns counterclockwise
         else if (gamepad1.left_trigger > TRIGGER_DEADZONE) {
-            powMat = addMat(powMat, DRIVE_ARRAY[DRIVE_MODE][5]);
+            powMat = addMat(powMat, DRIVE_ARRAY[5]);
         }
 
         // Left-Bumper Decreases Speed by SPEED_VAR
