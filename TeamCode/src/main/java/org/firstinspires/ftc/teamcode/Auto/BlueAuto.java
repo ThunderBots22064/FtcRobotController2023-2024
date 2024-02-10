@@ -34,6 +34,7 @@ import static org.firstinspires.ftc.teamcode.OldCode.OldTeleOp.intToDir;
 import android.os.Environment;
 import android.util.Size;
 
+import org.firstinspires.ftc.robotcore.external.JavaUtil;
 import org.firstinspires.ftc.teamcode.Auto.CONFIGAuto;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
@@ -62,12 +63,13 @@ import java.util.List;
 //@Disabled
 public class BlueAuto extends LinearOpMode {
     /*** CONFIG PRESETS ***/
+    /* from old config, commented out bc not in use currently
     float SPEED_DEF = CONFIG.DRIVETRAIN.SPEED_DEF;
     float SPEED_MIN = CONFIG.DRIVETRAIN.SPEED_MIN;
     float SPEED_MAX = CONFIG.DRIVETRAIN.SPEED_MAX;
     float SPEED_VAR = CONFIG.DRIVETRAIN.SPEED_VAR;
     float SPEED_HOL = SPEED_DEF;
-    float ARM_SPEED = CONFIG.CONTROL_SURFACES.ARM.ARM_SPEED;
+    float ARM_SPEED = CONFIG.CONTROL_SURFACES.ARM.ARM_SPEED;*/
 
     // Drivetrain motors
     DcMotor mtFL = null; // Front Left
@@ -76,7 +78,8 @@ public class BlueAuto extends LinearOpMode {
     DcMotor mtBR = null; // Back Right
 
     // Arm Motor and Claw Servos
-   /* CRServo svClaw1 = null;
+   /* from old config, commented out bc not in use currently
+    CRServo svClaw1 = null;
     CRServo svClaw2 = null;
     DcMotor mtArm = null;
     int lastArmPos = 0;
@@ -108,9 +111,50 @@ public class BlueAuto extends LinearOpMode {
      */
     private VisionPortal visionPortal;
 
+    //Stop function to stop power to wheels for inputted time (in seconds)
+    private void stop(int time__in_seconds_) {
+        mtBL.setPower(0);
+        mtBR.setPower(0);
+        mtFL.setPower(0);
+        mtFR.setPower(0);
+        sleep(time__in_seconds_ * 1000);
+    }
+    // Forward function to move wheels forward for inputted time and with inputted power
+    private void forward(double time__in_seconds_, double power) {
+        mtBL.setPower(power);
+        mtBR.setPower(power);
+        mtFL.setPower(power);
+        mtFR.setPower(power);
+        sleep((long) (time__in_seconds_ * 1000));
+    }
+    // Backward function to move wheels backward for inputted time and with inputted power
+    private void backward(double time__in_seconds_, double power){
+        mtBL.setPower(-power);
+        mtBR.setPower(-power);
+        mtFR.setPower(-power);
+        mtFL.setPower(-power);
+        sleep((long) (time__in_seconds_ * 1000));
+    }
+    // Turn left function to turn left for inputted time and with inputted power
+    private void turn_Left(double time__in_seconds_, double power) {
+        mtBL.setPower(-power);
+        mtBR.setPower(power);
+        mtFR.setPower(power);
+        mtFL.setPower(-power);
+        sleep((long) (time__in_seconds_ * 1000));
+    }
+    // Turn right function to turn right for inputted time and with inputted power
+    private void turn_Right(double time__in_seconds_, double power){
+        mtBL.setPower(power);
+        mtBR.setPower(-power);
+        mtFR.setPower(-power);
+        mtFL.setPower(power);
+        sleep((long) (time__in_seconds_ * 1000));
+    }
+
     @Override
     public void runOpMode() {
-
+        boolean have_seen = false;
         // Setup motors
         // Motors are first identified with the 'mt' (Motor)
         // They're then identified with F (Front) or B (Back)
@@ -144,28 +188,41 @@ public class BlueAuto extends LinearOpMode {
         waitForStart();
 
         if (opModeIsActive()) {
+            // this is where run blocks would go if this was a block code
+            forward(1, 0.25);
+            stop(2);
             while (opModeIsActive()) {
-
+                // this is where loop blocks would go if this was a block code
                 telemetryTfod();
 
                 // Push telemetry to the Driver Station.
                 telemetry.update();
 
-                // Save CPU resources; can resume streaming when needed.
-                if (gamepad1.dpad_down) {
-                    visionPortal.stopStreaming();
-                } else if (gamepad1.dpad_up) {
-                    visionPortal.resumeStreaming();
-                }
+                // Get a list of recognitions from TFOD.
+                List<Recognition> currentRecognitions = tfod.getRecognitions();
 
-                // Share the CPU.
-                sleep(20);
+                if (JavaUtil.listLength(currentRecognitions) == 0 && false == have_seen) {
+                    telemetry.addData("TFOD", "I'm blind");
+                    turn_Left(0.4, 0.25);
+                    stop(1);
+                    telemetryTfod();
+                    // Push telemetry to the Driver Station
+                    telemetry.update();
+                } else
+                    for (Recognition recognition : currentRecognitions) {
+                        if (recognition.getLabel().equals("blue")) {
+                            telemetryTfod();
+                            // Push telemetry to the Driver Station.
+                            telemetry.update();
+                            telemetry.addData("TFOD", "I'm feeling blue");
+                            forward(0.75, 0.25);
+                            backward(0.25, 0.25);
+                            stop(1);
+                            have_seen = true;
+                        }
+                    }
             }
         }
-
-        // Save more CPU resources when camera is no longer needed.
-        visionPortal.close();
-
     }   // end runOpMode()
 
     /**
