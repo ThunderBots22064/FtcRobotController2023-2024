@@ -23,7 +23,13 @@ public class Main extends CommandOpMode {
         pad1 = new GamepadEx(gamepad1);
         pad2 = new GamepadEx(gamepad2);
 
+        // Defaults
         register(arm);
         arm.setDefaultCommand(new HoldArm(arm, CONFIG.CONTROL_SURFACES.ARM.TICKS));  
+
+        // Gamepad1
+
+        // Gamepad2
+        new StickTrigger(pad2, Stick.LEFT_Y, CONFIG.CONTROLLER.STICK_DEADZONE).whileActiveContinuous(new MoveArm(pad2, arm));
     }
 }
