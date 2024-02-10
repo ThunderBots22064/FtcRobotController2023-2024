@@ -29,18 +29,23 @@
 
 package org.firstinspires.ftc.teamcode.Auto;
 
-//import com.qualcomm.robotcore.eventloop.opmode.Disabled;
-import android.os.Environment;
+import static org.firstinspires.ftc.teamcode.OldCode.OldTeleOp.intToDir;
 
-import org.firstinspires.ftc.teamcode.OldCode.CONFIG;
+import android.os.Environment;
+import android.util.Size;
+
+import org.firstinspires.ftc.teamcode.Auto.CONFIGAuto;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.BuiltinCameraDirection;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
+import org.firstinspires.ftc.teamcode.OldCode.CONFIG;
 import org.firstinspires.ftc.vision.VisionPortal;
 import org.firstinspires.ftc.vision.tfod.TfodProcessor;
 
@@ -56,11 +61,29 @@ import java.util.List;
 @TeleOp(name = "Concept: TensorFlow Object Detection", group = "Concept")
 //@Disabled
 public class BlueAuto extends LinearOpMode {
+    /*** CONFIG PRESETS ***/
+    float SPEED_DEF = CONFIG.DRIVETRAIN.SPEED_DEF;
+    float SPEED_MIN = CONFIG.DRIVETRAIN.SPEED_MIN;
+    float SPEED_MAX = CONFIG.DRIVETRAIN.SPEED_MAX;
+    float SPEED_VAR = CONFIG.DRIVETRAIN.SPEED_VAR;
+    float SPEED_HOL = SPEED_DEF;
+    float ARM_SPEED = CONFIG.CONTROL_SURFACES.ARM.ARM_SPEED;
 
-    /*
-    add something here to get the motors set up
-     */
+    // Drivetrain motors
+    DcMotor mtFL = null; // Front Left
+    DcMotor mtFR = null; // Front Right
+    DcMotor mtBL = null; // Back Left
+    DcMotor mtBR = null; // Back Right
 
+    // Arm Motor and Claw Servos
+   /* CRServo svClaw1 = null;
+    CRServo svClaw2 = null;
+    DcMotor mtArm = null;
+    int lastArmPos = 0;
+    int expecArmPos = 0;
+    float armProp = 0;
+    float armDeriv = 0;
+    float armInteg = 0;*/
 
     private static final boolean USE_WEBCAM = true;  // true for webcam, false for phone camera
 
@@ -69,7 +92,7 @@ public class BlueAuto extends LinearOpMode {
     private static final String TFOD_MODEL_ASSET = "blue.tflite";
     // TFOD_MODEL_FILE points to a model file stored onboard the Robot Controller's storage,
     // this is used when uploading models directly to the RC using the model upload interface.
-    private static final String TFOD_MODEL_FILE = Environment.getExternalStorageDirectory().getPath() + "/FIRST/tflitemodels/myCustomModel.tflite";
+    //private static final String TFOD_MODEL_FILE = Environment.getExternalStorageDirectory().getPath() + "/FIRST/tflitemodels/myCustomModel.tflite";
     // Define the labels recognized in the model for TFOD (must be in training order!)
     private static final String[] LABELS = {
             "blue",
@@ -87,6 +110,30 @@ public class BlueAuto extends LinearOpMode {
 
     @Override
     public void runOpMode() {
+
+        // Setup motors
+        // Motors are first identified with the 'mt' (Motor)
+        // They're then identified with F (Front) or B (Back)
+        // Next the side is identified with L (Left) or R (Right)
+        mtFL = hardwareMap.get(DcMotor.class, CONFIG.DRIVETRAIN.FRONT_LEFT_DEVICE);
+        mtFR = hardwareMap.get(DcMotor.class, CONFIG.DRIVETRAIN.FRONT_RIGHT_DEVICE);
+        mtBL = hardwareMap.get(DcMotor.class, CONFIG.DRIVETRAIN.BACK_LEFT_DEVICE);
+        mtBR = hardwareMap.get(DcMotor.class, CONFIG.DRIVETRAIN.BACK_RIGHT_DEVICE);
+
+        mtFL.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        mtFR.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        mtBL.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        mtBR.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+        mtFL.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        mtFR.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        mtBL.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        mtBR.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+
+        mtFL.setDirection(intToDir(CONFIG.DRIVETRAIN.FL_DIR));
+        mtFR.setDirection(intToDir(CONFIG.DRIVETRAIN.FR_DIR));
+        mtBL.setDirection(intToDir(CONFIG.DRIVETRAIN.BL_DIR));
+        mtBR.setDirection(intToDir(CONFIG.DRIVETRAIN.BR_DIR));
 
         initTfod();
 
@@ -134,16 +181,16 @@ public class BlueAuto extends LinearOpMode {
                 // choose one of the following:
                 //   Use setModelAssetName() if the custom TF Model is built in as an asset (AS only).
                 //   Use setModelFileName() if you have downloaded a custom team model to the Robot Controller.
-                //.setModelAssetName(TFOD_MODEL_ASSET)
+                .setModelAssetName(TFOD_MODEL_ASSET)
                 //.setModelFileName(TFOD_MODEL_FILE)
 
                 // The following default settings are available to un-comment and edit as needed to
                 // set parameters for custom models.
-                //.setModelLabels(LABELS)
+                .setModelLabels(LABELS)
                 //.setIsModelTensorFlow2(true)
                 //.setIsModelQuantized(true)
                 //.setModelInputSize(300)
-                //.setModelAspectRatio(16.0 / 9.0)
+                .setModelAspectRatio(16.0 / 9.0)
 
                 .build();
 
@@ -158,18 +205,18 @@ public class BlueAuto extends LinearOpMode {
         }
 
         // Choose a camera resolution. Not all cameras support all resolutions.
-        //builder.setCameraResolution(new Size(640, 480));
+        builder.setCameraResolution(new Size(640, 480));
 
         // Enable the RC preview (LiveView).  Set "false" to omit camera monitoring.
-        //builder.enableLiveView(true);
+        builder.enableLiveView(true);
 
         // Set the stream format; MJPEG uses less bandwidth than default YUY2.
-        //builder.setStreamFormat(VisionPortal.StreamFormat.YUY2);
+        builder.setStreamFormat(VisionPortal.StreamFormat.YUY2);
 
         // Choose whether or not LiveView stops if no processors are enabled.
         // If set "true", monitor shows solid orange screen if no processors enabled.
         // If set "false", monitor shows camera view without annotations.
-        //builder.setAutoStopLiveView(false);
+        builder.setAutoStopLiveView(false);
 
         // Set and enable the processor.
         builder.addProcessor(tfod);
@@ -178,7 +225,7 @@ public class BlueAuto extends LinearOpMode {
         visionPortal = builder.build();
 
         // Set confidence threshold for TFOD recognitions, at any time.
-        //tfod.setMinResultConfidence(0.75f);
+        tfod.setMinResultConfidence(0.90f);
 
         // Disable or re-enable the TFOD processor at any time.
         //visionPortal.setProcessorEnabled(tfod, true);
