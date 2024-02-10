@@ -17,7 +17,7 @@ public class MoveArm extends CommandBase {
      * Creates a MoveArm command
      * @param arm The arm subsystem
      */
-    public MoveArm(final ArmSubsystem arm, final GamepadEx pad) {
+    public MoveArm(final GamepadEx pad, final ArmSubsystem arm) {
         this.arm = arm;
         this.pad = pad;
 
