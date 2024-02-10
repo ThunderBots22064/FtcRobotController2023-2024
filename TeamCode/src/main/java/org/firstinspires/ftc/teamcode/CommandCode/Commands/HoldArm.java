@@ -1,13 +1,13 @@
 package org.firstinspires.ftc.teamcode.CommandCode.Commands;
 
 import com.arcrobotics.ftclib.command.CommandBase;
-import org.firstinspires.ftc.teamcode.CommandCode.Subsystems.*;
+import org.firstinspires.ftc.teamcode.CommandCode.Subsystems.ArmSubsystem;
 
 /**
  * This command holds the robot's arm at certain position
 */
 public class HoldArm extends CommandBase {
-    private final Subsystems.ArmSubsystem arm;
+    private final ArmSubsystem arm;
     private final int targetPos;
     private final int ticks;
     private int tickCount = 0;
@@ -17,7 +17,7 @@ public class HoldArm extends CommandBase {
      * @param arm The arm subsystem
      * @param ticks The number of ticks between each correction
      */
-    public HoldArm(Subsystems.ArmSubsystem arm, int ticks) {
+    public HoldArm(final ArmSubsystem arm, final int ticks) {
         this.arm = arm;
         this.ticks = ticks;
 
