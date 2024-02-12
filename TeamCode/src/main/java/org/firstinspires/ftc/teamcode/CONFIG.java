@@ -47,6 +47,9 @@ public final class CONFIG {
     }
 
     public final static class CONTROL_SURFACES {
+        public final static class IMU {
+            public final static String IMU_DEVICE = "imu";
+        }
 		public final static class HOOK {
 	        // The motor name for the hanging mechanism
 	        public final static String HOOK_DEVICE = "thingy";
