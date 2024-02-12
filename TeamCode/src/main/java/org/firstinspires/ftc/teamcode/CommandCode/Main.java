@@ -23,8 +23,10 @@ public class Main extends CommandOpMode {
     GamepadEx pad2;
 
     public void initialize() {
-        arm = new ArmSubsystem(hardwareMap, CONFIG.CONTROL_SURFACES.ARM.ARM1_DEVICE,CONFIG.CONTROL_SURFACES.ARM.ARM2_DEVICE);
-        drone = new DroneSubsystem(hardwareMap, CONFIG.CONTROL_SURFACES.DRONE.DRONE_DEVICE);
+        arm = new ArmSubsystem(hardwareMap);
+        drone = new DroneSubsystem(hardwareMap);
+        hook = new HookSubsystem(hardwareMap);
+
         pad1 = new GamepadEx(gamepad1);
         pad2 = new GamepadEx(gamepad2);
 
