@@ -1,7 +1,7 @@
 package org.firstinspires.ftc.teamcode.CommandCode;
 
-import com.arcrobotics.ftclib.command.button;
-import com.arcrobotics.ftclib.command.gamepad;
+import com.arcrobotics.ftclib.command.button.Trigger;
+import com.arcrobotics.ftclib.gamepad.GamepadEx;
 
 enum Stick {
     LEFT_X,

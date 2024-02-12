@@ -4,7 +4,7 @@ import org.firstinspires.ftc.teamcode.CONFIG.CONTROL_SURFACES.ARM;
 
 import com.arcrobotics.ftclib.command.CommandBase;
 import org.firstinspires.ftc.teamcode.CommandCode.Subsystems.ArmSubsystem;
-import com.arcrobotics.ftclib.command.gamepad;
+import com.arcrobotics.ftclib.gamepad.GamepadEx;
 
 /**
  * This command move the arm to a certain position given a joystick input
@@ -36,7 +36,7 @@ public class MoveArm extends CommandBase {
     }
 
     @Override
-    public void end() {
+    public void end(boolean interrupted) {
         arm.stop();
     }
 }

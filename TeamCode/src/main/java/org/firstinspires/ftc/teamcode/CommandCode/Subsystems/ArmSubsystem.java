@@ -2,8 +2,8 @@ package org.firstinspires.ftc.teamcode.CommandCode.Subsystems;
 
 import org.firstinspires.ftc.teamcode.CONFIG.CONTROL_SURFACES.ARM;
 
-import com.arcrobotics.ftclib2.command.SubsystemBase;
-import com.qualcomm.robotcore.hardware.hardwareMap;
+import com.arcrobotics.ftclib.command.SubsystemBase;
+import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
 import java.lang.Math;
@@ -34,7 +34,7 @@ public class ArmSubsystem extends SubsystemBase {
     }
 
     public int getAvgPos() {
-        return (mtArm1.getCurrentPosition + mtArm2.getCurrentPosition) / 2;
+        return (mtArm1.getCurrentPosition() + mtArm2.getCurrentPosition()) / 2;
     }
 
     /**
@@ -46,7 +46,7 @@ public class ArmSubsystem extends SubsystemBase {
         int error = targetPos - avgPos;
         float total = 0;
 
-        int proportion = ARM.Kp * error;
+        float proportion = ARM.Kp * error;
         
         // Thank you!
         // https://stackoverflow.com/questions/16656651/does-java-have-a-clamp-function

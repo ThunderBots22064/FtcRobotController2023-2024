@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.CommandCode.Commands;
 
 import com.arcrobotics.ftclib.command.CommandBase;
+
 import org.firstinspires.ftc.teamcode.CommandCode.Subsystems.ArmSubsystem;
 
 /**
@@ -8,7 +9,7 @@ import org.firstinspires.ftc.teamcode.CommandCode.Subsystems.ArmSubsystem;
 */
 public class HoldArm extends CommandBase {
     private final ArmSubsystem arm;
-    private final int targetPos;
+    private int targetPos;
     private final int ticks;
     private int tickCount = 0;
 
@@ -37,7 +38,7 @@ public class HoldArm extends CommandBase {
     }
 
     @Override
-    public void end() {
+    public void end(boolean interrupted) {
         arm.stop();
     }
 }
