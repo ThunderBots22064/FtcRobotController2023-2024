@@ -17,6 +17,7 @@ import org.firstinspires.ftc.teamcode.CommandCode.Subsystems.*;
 public class Main extends CommandOpMode {
     ArmSubsystem arm;
     DroneSubsystem drone;
+    HookSubsystem hook;
 
     GamepadEx pad1;
     GamepadEx pad2;
@@ -47,5 +48,18 @@ public class Main extends CommandOpMode {
         }, drone));
         // Alternative
         // pad1.getGamepadButton(GamepadKeys.Button.X)
+
+        // Hook
+        new GamepadButton(pad2, GamepadKeys.Button.Y).whenHeld(new InstantCommand(() -> {
+            hook.raise();
+        }, hook)).whenReleased(new InstantCommand(() -> {
+            hook.stop();
+        }, hook));
+
+        new GamepadButton(pad2, GamepadKeys.Button.A).whenHeld(new InstantCommand(() -> {
+            hook.lower();
+        }, hook)).whenReleased(new InstantCommand(() -> {
+            hook.stop();
+        }, hook));
     }
 }
