@@ -7,19 +7,19 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.CRServo;
 
 public class DroneSubsystem extends SubsystemBase {
-    private final CRServo servo;
+    private final CRServo svDrone;
 
-    public DroneSubsystem(final HardwareMap hardMap, final String servo) {
-        this.servo = hardMap.get(CRServo.class, servo);
+    public DroneSubsystem(final HardwareMap hardMap) {
+        svDrone = hardMap.get(CRServo.class, DRONE.DRONE_DEVICE);
 
-        this.servo.setDirection(DRONE.DRONE_DIR);
+        svDrone.setDirection(DRONE.DRONE_DIR);
     }
 
     public void fire() {
-        servo.setPower(1);
+        svDrone.setPower(1);
     }
 
     public void stop() {
-        servo.setPower(0);
+        svDrone.setPower(0);
     }
 }

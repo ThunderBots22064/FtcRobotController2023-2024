@@ -10,9 +10,9 @@ public class ArmSubsystem extends SubsystemBase {
     private final DcMotor mtArm1;
     private final DcMotor mtArm2;
 
-    public ArmSubsystem(final HardwareMap hardMap, final String motor1, final String motor2) {
-        mtArm1 = hardMap.get(DcMotor.class, motor1);
-        mtArm2 = hardMap.get(DcMotor.class, motor2);
+    public ArmSubsystem(final HardwareMap hardMap) {
+        mtArm1 = hardMap.get(DcMotor.class, ARM.ARM1_DEVICE);
+        mtArm2 = hardMap.get(DcMotor.class, ARM.ARM2_DEVICE);
 
         mtArm1.setDirection(ARM.ARM1_DIR);
         mtArm1.setDirection(ARM.ARM2_DIR);
