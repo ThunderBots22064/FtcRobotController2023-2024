@@ -52,6 +52,8 @@ public final class CONFIG {
 	        public final static String HOOK_DEVICE = "thingy";
 	        public final static float HOOK_SPEED_UP = 0.90f;
 	        public final static float HOOK_SPEED_DOWN = 0.60f;
+
+            public final static DcMotorSimple.Direction HOOK_DIR = DcMotorSimple.Direction.FORWARD;
 	        public final static int HOOK_FLOOR = 0;
 	        public final static int HOOK_ROOF = 9200;
 		}
