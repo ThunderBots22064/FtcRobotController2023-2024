@@ -42,9 +42,9 @@ public class Main extends CommandOpMode {
         // Drone
         new GamepadButton(pad2, GamepadKeys.Button.X).whenHeld(new InstantCommand(() -> {
             drone.fire();
-        })).whenReleased(new InstantCommand(() -> {
+        }, drone)).whenReleased(new InstantCommand(() -> {
             drone.stop();
-        }));
+        }, drone));
         // Alternative
         // pad1.getGamepadButton(GamepadKeys.Button.X)
     }

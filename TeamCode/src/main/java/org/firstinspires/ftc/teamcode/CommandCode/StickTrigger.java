@@ -8,7 +8,7 @@ enum Stick {
     LEFT_Y,
     RIGHT_X,
     RIGHT_Y
-};
+}
 
 public class StickTrigger extends Trigger {
     final axis controlAxis;
@@ -46,10 +46,7 @@ public class StickTrigger extends Trigger {
     public boolean get() {
         double pos = controlAxis.getPos();
 
-        if (pos >= deadzone || pos <= -deadzone) {
-            return true;
-        }
-        return false;
+        return (pos >= deadzone || pos <= -deadzone);
     }
 
     @FunctionalInterface

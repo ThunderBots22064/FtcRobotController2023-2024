@@ -4,7 +4,7 @@ import com.qualcomm.robotcore.hardware.*;
 
 // This file contains all configuration stuff
 public final class CONFIG {
-    public final class CONTROLLER {
+    public final static class CONTROLLER {
         // How far a joystick has to move before anything is detected
         public final static float STICK_DEADZONE = 0.40f;
         
@@ -12,7 +12,7 @@ public final class CONFIG {
         public final static float TRIGGER_DEADZONE = 0.50f;
     }
 	
-    public final class DRIVETRAIN {
+    public final static class DRIVETRAIN {
         // The percent motor speed for the drivetrain
         public final static float SPEED_DEF = 0.50f;
         // The minimum speed of the drivetrain
@@ -46,8 +46,8 @@ public final class CONFIG {
         public final static DcMotorSimple.Direction BR_DIR = DcMotorSimple.Direction.REVERSE;
     }
 
-    public final class CONTROL_SURFACES {
-		public final class HOOK {
+    public final static class CONTROL_SURFACES {
+		public final static class HOOK {
 	        // The motor name for the hanging mechanism
 	        public final static String HOOK_DEVICE = "thingy";
 	        public final static float HOOK_SPEED_UP = 0.90f;
@@ -56,14 +56,14 @@ public final class CONFIG {
 	        public final static int HOOK_ROOF = 9200;
 		}
 
-		public final class DRONE {
+		public final static class DRONE {
 	        // String value that corresponds to the servo 
 			// device for the servo which launches the paper airplane
 	        public final static String DRONE_DEVICE = "arm";
 	        public final static DcMotorSimple.Direction DRONE_DIR = DcMotorSimple.Direction.REVERSE;
 		}
 		
-		public final class CLAW {
+		public final static class CLAW {
 	        // Hardware Maps for Claw Pincer Servos
 	        public final static String CLAW1_DEVICE = "Claw1";
 	        public final static String CLAW2_DEVICE = "Claw2";
@@ -71,7 +71,7 @@ public final class CONFIG {
 	        public final static DcMotorSimple.Direction CLAW2_DIR = DcMotorSimple.Direction.FORWARD;
 		}
         
-		public final class ARM {
+		public final static class ARM {
 			// Hardware Map for the Arm
 	        public final static String ARM1_DEVICE = "Arm1";
             public final static String ARM2_DEVICE = "Arm2";

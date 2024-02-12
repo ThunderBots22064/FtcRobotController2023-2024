@@ -6,8 +6,6 @@ import com.arcrobotics.ftclib.command.SubsystemBase;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
-import java.lang.Math;
-
 public class ArmSubsystem extends SubsystemBase {
     private final DcMotor mtArm1;
     private final DcMotor mtArm2;
