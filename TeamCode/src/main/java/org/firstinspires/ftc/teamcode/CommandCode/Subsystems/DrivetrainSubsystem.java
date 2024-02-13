@@ -9,12 +9,15 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import org.firstinspires.ftc.teamcode.CONFIG.DRIVETRAIN;
 public class DrivetrainSubsystem extends SubsystemBase {
     private final MecanumDrive chassis;
+    private float speed;
 
     public DrivetrainSubsystem(HardwareMap hardMap) {
         chassis = new MecanumDrive(
                 new Motor(hardMap, DRIVETRAIN.FRONT_LEFT_DEVICE), new Motor(hardMap, DRIVETRAIN.FRONT_RIGHT_DEVICE),
                 new Motor(hardMap, DRIVETRAIN.BACK_LEFT_DEVICE), new Motor(hardMap, DRIVETRAIN.BACK_RIGHT_DEVICE)
         );
+
+        speed = DRIVETRAIN.SPEED_DEF;
     }
 
     /**
@@ -24,7 +27,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
      * @param turnSpeed the rotation speed
      */
     public void driveRobotCentric(double strafeSpeed, double forwardSpeed, double turnSpeed) {
-        chassis.driveRobotCentric(strafeSpeed, forwardSpeed, turnSpeed);
+        chassis.driveRobotCentric(strafeSpeed * speed, forwardSpeed * speed, turnSpeed * speed);
     }
 
     /**
@@ -36,5 +39,30 @@ public class DrivetrainSubsystem extends SubsystemBase {
      */
     public void driveFieldCentric(double strafeSpeed, double forwardSpeed, double turnSpeed, double heading) {
         chassis.driveFieldCentric(strafeSpeed, forwardSpeed, turnSpeed, heading);
+    }
+
+    /**
+     * Stops the robot
+     */
+    public void stop() {
+        chassis.stop();
+    }
+
+    /**
+     * Increases the percent speed of the robot given that it wont exceed the limit speed
+     */
+    public void increaseSpeed() {
+        if ((speed + DRIVETRAIN.SPEED_VAR) <= DRIVETRAIN.SPEED_MAX) {
+            speed += DRIVETRAIN.SPEED_VAR;
+        }
+    }
+
+    /**
+     * Decreases the percent speed of the robot given that it wont exceed the minimum speed
+     */
+    public void decreaseSpeed() {
+        if ((speed - DRIVETRAIN.SPEED_VAR) >= DRIVETRAIN.SPEED_MIN) {
+            speed -= DRIVETRAIN.SPEED_VAR;
+        }
     }
 }

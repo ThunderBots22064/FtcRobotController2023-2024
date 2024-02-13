@@ -18,6 +18,8 @@ public class Main extends CommandOpMode {
     ArmSubsystem arm;
     DroneSubsystem drone;
     HookSubsystem hook;
+    DrivetrainSubsystem chassis;
+    ImuSubsystem imu;
 
     GamepadEx pad1;
     GamepadEx pad2;
@@ -26,6 +28,9 @@ public class Main extends CommandOpMode {
         arm = new ArmSubsystem(hardwareMap);
         drone = new DroneSubsystem(hardwareMap);
         hook = new HookSubsystem(hardwareMap);
+        chassis = new DrivetrainSubsystem(hardwareMap);
+        imu = new ImuSubsystem(hardwareMap);
+
 
         pad1 = new GamepadEx(gamepad1);
         pad2 = new GamepadEx(gamepad2);
@@ -35,6 +40,13 @@ public class Main extends CommandOpMode {
         arm.setDefaultCommand(new HoldArm(arm, CONFIG.CONTROL_SURFACES.ARM.TICKS));  
 
         // --- Gamepad1 ---
+//        Does drivy stuff
+        new StickTrigger(pad1, Stick.LEFT_X, CONFIG.CONTROLLER.STICK_DEADZONE)
+                .or(new StickTrigger(pad1, Stick.RIGHT_Y, CONFIG.CONTROLLER.STICK_DEADZONE))
+                .whileActiveContinuous(new MoveRobot(pad1, chassis, imu))
+                .whenInactive(new InstantCommand(() -> {
+                    chassis.stop();
+                }, chassis));
 
         // --- Gamepad2 ---
 

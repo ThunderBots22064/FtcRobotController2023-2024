@@ -47,7 +47,7 @@ public final class CONFIG {
     }
 
     public final static class CONTROL_SURFACES {
-        public final static class IMU {
+        public final static class INTERTIALMU {
             public final static String IMU_DEVICE = "imu";
         }
 		public final static class HOOK {

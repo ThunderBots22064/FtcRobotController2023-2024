@@ -1,8 +1,9 @@
 package org.firstinspires.ftc.teamcode.CommandCode.Commands;
 
 import com.arcrobotics.ftclib.command.CommandBase;
-import org.firstinspires.ftc.teamcode.CommandCode.Subsystems.ArmSubsystem;
 import com.arcrobotics.ftclib.gamepad.GamepadEx;
+
+import org.firstinspires.ftc.teamcode.CommandCode.Subsystems.ArmSubsystem;
 
 /**
  * This command move the arm to a certain position given a joystick input
