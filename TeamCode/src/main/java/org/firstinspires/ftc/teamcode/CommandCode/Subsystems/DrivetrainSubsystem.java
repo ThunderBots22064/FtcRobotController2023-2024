@@ -4,17 +4,30 @@ import com.arcrobotics.ftclib.command.SubsystemBase;
 import com.arcrobotics.ftclib.drivebase.MecanumDrive;
 import com.arcrobotics.ftclib.hardware.motors.Motor;
 
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.teamcode.CONFIG.DRIVETRAIN;
+
 public class DrivetrainSubsystem extends SubsystemBase {
     private final MecanumDrive chassis;
+    private final Motor mtFL, mtFR, mtBL, mtBR;
     private float speed;
 
     public DrivetrainSubsystem(HardwareMap hardMap) {
+        mtFL = new Motor(hardMap, DRIVETRAIN.FRONT_LEFT_DEVICE);
+        mtFR = new Motor(hardMap, DRIVETRAIN.FRONT_RIGHT_DEVICE);
+        mtBL = new Motor(hardMap, DRIVETRAIN.BACK_LEFT_DEVICE);
+        mtBR = new Motor(hardMap, DRIVETRAIN.BACK_RIGHT_DEVICE);
+
+        mtFL.setInverted(DRIVETRAIN.FL_DIR_B);
+        mtFR.setInverted(DRIVETRAIN.FR_DIR_B);
+        mtBL.setInverted(DRIVETRAIN.BL_DIR_B);
+        mtBR.setInverted(DRIVETRAIN.BR_DIR_B);
+        
         chassis = new MecanumDrive(
-                new Motor(hardMap, DRIVETRAIN.FRONT_LEFT_DEVICE), new Motor(hardMap, DRIVETRAIN.FRONT_RIGHT_DEVICE),
-                new Motor(hardMap, DRIVETRAIN.BACK_LEFT_DEVICE), new Motor(hardMap, DRIVETRAIN.BACK_RIGHT_DEVICE)
+            mtFL, mtFR,
+            mtBL, mtBR
         );
 
         speed = DRIVETRAIN.SPEED_DEF;
