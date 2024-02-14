@@ -70,7 +70,7 @@ public final class CONFIG {
 		public final static class DRONE {
 	        // String value that corresponds to the servo 
 			// device for the servo which launches the paper airplane
-	        public final static String DRONE_DEVICE = "arm";
+	        public final static String DRONE_DEVICE = "drone";
 	        public final static DcMotorSimple.Direction DRONE_DIR = DcMotorSimple.Direction.REVERSE;
 		}
 		
