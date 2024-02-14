@@ -17,13 +17,13 @@ public class MoveRobot extends CommandBase {
         this.imu = imu;
 
         addRequirements(chassis);
-        addRequirements();
+        addRequirements(imu);
     }
 
     @Override
     public void execute() {
         double turn = (pad.getTrigger(GamepadKeys.Trigger.LEFT_TRIGGER) < pad.getTrigger(GamepadKeys.Trigger.RIGHT_TRIGGER)) ? 1.0 : -1.0;
-        chassis.driveFieldCentric(pad.getLeftX(), pad.getRightY(), turn, imu.getHeading());
+        chassis.driveRobotCentric(pad.getLeftX(), pad.getRightY(), turn);//, imu.getHeading());
     }
 
     @Override

@@ -6,6 +6,7 @@ import com.arcrobotics.ftclib.gamepad.GamepadKeys;
 import com.arcrobotics.ftclib.command.CommandOpMode;
 import com.arcrobotics.ftclib.command.InstantCommand;
 
+import com.arcrobotics.ftclib.gamepad.TriggerReader;
 import com.qualcomm.robotcore.eventloop.opmode.*;
 
 import org.firstinspires.ftc.teamcode.CONFIG;
@@ -43,13 +44,13 @@ public class Main extends CommandOpMode {
 //        Does drivy stuff
         new StickTrigger(pad1, Stick.LEFT_X, CONFIG.CONTROLLER.STICK_DEADZONE)
                 .or(new StickTrigger(pad1, Stick.RIGHT_Y, CONFIG.CONTROLLER.STICK_DEADZONE))
+//                .or(pad1.getTrigger(GamepadKeys.Trigger.LEFT_TRIGGER))
                 .whileActiveContinuous(new MoveRobot(pad1, chassis, imu))
                 .whenInactive(new InstantCommand(() -> {
                     chassis.stop();
                 }, chassis));
 
         // --- Gamepad2 ---
-
         // Arm
         new StickTrigger(pad2, Stick.LEFT_Y, CONFIG.CONTROLLER.STICK_DEADZONE)
         .whileActiveContinuous(new MoveArm(pad2, arm));
