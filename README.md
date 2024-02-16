@@ -1,5 +1,7 @@
 # 22064 FTC Controller - 2024 Edition
 
+# [QUICKSTART GUIDE FOR DRIVERS](TeamCode/src/main/java/org/firstinspires/ftc/teamcode/readme.md)
+
 ## Description
 This repository has the code for the 22064 FTC team's robot code.
 
