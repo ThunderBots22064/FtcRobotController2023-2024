@@ -7,7 +7,7 @@ import com.arcrobotics.ftclib.gamepad.GamepadKeys;
 import org.firstinspires.ftc.teamcode.CommandCode.Subsystems.DrivetrainSubsystem;
 import org.firstinspires.ftc.teamcode.CommandCode.Subsystems.ImuSubsystem;
 
-import org.firstinspires.ftc.teamcode.CONFIG.CONTROLLER;;
+import org.firstinspires.ftc.teamcode.CONFIG.CONTROLLER;
 
 public class MoveRobot extends CommandBase {
     private final DrivetrainSubsystem chassis;

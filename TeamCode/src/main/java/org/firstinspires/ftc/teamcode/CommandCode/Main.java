@@ -9,9 +9,7 @@ import com.arcrobotics.ftclib.command.InstantCommand;
 import com.arcrobotics.ftclib.gamepad.TriggerReader;
 
 import com.qualcomm.robotcore.eventloop.opmode.*;
-import static org.firstinspires.ftc.robotcore.external.Telemetry.*;
 
-import org.checkerframework.checker.units.qual.C;
 import org.firstinspires.ftc.teamcode.CONFIG;
 import org.firstinspires.ftc.teamcode.CommandCode.Commands.*;
 import org.firstinspires.ftc.teamcode.CommandCode.Subsystems.*;
