@@ -44,6 +44,12 @@ public final class CONFIG {
         public final static DcMotorSimple.Direction FR_DIR = DcMotorSimple.Direction.REVERSE;
         public final static DcMotorSimple.Direction BL_DIR = DcMotorSimple.Direction.FORWARD;
         public final static DcMotorSimple.Direction BR_DIR = DcMotorSimple.Direction.REVERSE;
+
+        // Motor directions in boolean form (True -> Reverse, False -> Forward)
+        public final static boolean FL_DIR_B = true;
+        public final static boolean FR_DIR_B = true;
+        public final static boolean BL_DIR_B = false;
+        public final static boolean BR_DIR_B = true;
     }
 
     public final static class CONTROL_SURFACES {
@@ -64,7 +70,7 @@ public final class CONFIG {
 		public final static class DRONE {
 	        // String value that corresponds to the servo 
 			// device for the servo which launches the paper airplane
-	        public final static String DEVICE = "arm";
+	        public final static String DEVICE = "drone";
 	        public final static DcMotorSimple.Direction DIR = DcMotorSimple.Direction.REVERSE;
 		}
 		

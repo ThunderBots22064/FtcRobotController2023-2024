@@ -5,8 +5,10 @@ import com.arcrobotics.ftclib.gamepad.GamepadEx;
 import com.arcrobotics.ftclib.gamepad.GamepadKeys;
 import com.arcrobotics.ftclib.command.CommandOpMode;
 import com.arcrobotics.ftclib.command.InstantCommand;
+import com.arcrobotics.ftclib.gamepad.TriggerReader;
 
 import com.qualcomm.robotcore.eventloop.opmode.*;
+import org.firstinspires.ftc.robotcore.external.Telemetry;
 
 import org.firstinspires.ftc.teamcode.CONFIG;
 import org.firstinspires.ftc.teamcode.CommandCode.Commands.*;
@@ -18,7 +20,7 @@ public class Main extends CommandOpMode {
     ArmSubsystem arm;
     DroneSubsystem drone;
     HookSubsystem hook;
-    DrivetrainSubsystem chassis;
+    DrivetrainSubsystem drivetrain;
     ImuSubsystem imu;
 
     GamepadEx pad1;
@@ -28,7 +30,7 @@ public class Main extends CommandOpMode {
         arm = new ArmSubsystem(hardwareMap);
         drone = new DroneSubsystem(hardwareMap);
         hook = new HookSubsystem(hardwareMap);
-        chassis = new DrivetrainSubsystem(hardwareMap);
+        drivetrain = new DrivetrainSubsystem(hardwareMap);
         imu = new ImuSubsystem(hardwareMap);
 
 
@@ -37,19 +39,36 @@ public class Main extends CommandOpMode {
 
         // --- Defaults ---
         register(arm);
-        arm.setDefaultCommand(new HoldArm(arm, CONFIG.CONTROL_SURFACES.ARM.TICKS));  
+        arm.setDefaultCommand(new HoldArm(arm, CONFIG.CONTROL_SURFACES.ARM.TICKS)); 
+        
+        register(imu);
+        imu.setDefaultCommand(new InstantCommand(() -> {
+            Telemetry.addData("IMU Heading: ", imu.getHeading());
+        }, imu));
 
         // --- Gamepad1 ---
-//        Does drivy stuff
+        // Drivey
         new StickTrigger(pad1, Stick.LEFT_X, CONFIG.CONTROLLER.STICK_DEADZONE)
-                .or(new StickTrigger(pad1, Stick.RIGHT_Y, CONFIG.CONTROLLER.STICK_DEADZONE))
-                .whileActiveContinuous(new MoveRobot(pad1, chassis, imu))
-                .whenInactive(new InstantCommand(() -> {
-                    chassis.stop();
-                }, chassis));
+        .or(new StickTrigger(pad1, Stick.RIGHT_Y, CONFIG.CONTROLLER.STICK_DEADZONE))
+        .or(new Trigger((new TriggerReader(pad1, GamepadKeys.Trigger.RIGHT_TRIGGER))::isDown))
+        .or(new Trigger((new TriggerReader(pad1, GamepadKeys.Trigger.LEFT_TRIGGER))::isDown))
+        .whileActiveContinuous(new MoveRobot(pad1, drivetrain, imu))
+        .whenInactive(new InstantCommand(() -> {
+            drivetrain.stop();
+        }, drivetrain));
+
+        // Speed Control
+        new GamepadButton(pad1, GamepadKeys.Button.LEFT_BUMPER)
+        .whenPressed(new InstandCommand(() -> {
+            drivetrain.decreaseSpeed();
+        }, drivetrain));
+
+        new GamepadButton(pad1, GamepadKeys.Button.RIGHT_BUMPER)
+        .whenPressed(new InstandCommand(() -> {
+            drivetrain.increaseSpeed();
+        }, drivetrain));
 
         // --- Gamepad2 ---
-
         // Arm
         new StickTrigger(pad2, Stick.LEFT_Y, CONFIG.CONTROLLER.STICK_DEADZONE)
         .whileActiveContinuous(new MoveArm(pad2, arm));

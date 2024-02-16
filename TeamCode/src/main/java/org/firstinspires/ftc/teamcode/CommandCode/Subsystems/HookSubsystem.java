@@ -21,7 +21,7 @@ public class HookSubsystem extends SubsystemBase {
     }
 
     public void lower() {
-        mtHook.setPower(HOOK.SPEED_DOWN);
+        mtHook.setPower(-HOOK.SPEED_DOWN);
     }
 
     public void stop() {
