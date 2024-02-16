@@ -5,9 +5,10 @@ import com.arcrobotics.ftclib.gamepad.GamepadEx;
 import com.arcrobotics.ftclib.gamepad.GamepadKeys;
 import com.arcrobotics.ftclib.command.CommandOpMode;
 import com.arcrobotics.ftclib.command.InstantCommand;
-
 import com.arcrobotics.ftclib.gamepad.TriggerReader;
+
 import com.qualcomm.robotcore.eventloop.opmode.*;
+import org.firstinspires.ftc.robotcore.external.Telemetry;
 
 import org.firstinspires.ftc.teamcode.CONFIG;
 import org.firstinspires.ftc.teamcode.CommandCode.Commands.*;
@@ -38,17 +39,23 @@ public class Main extends CommandOpMode {
 
         // --- Defaults ---
         register(arm);
-        arm.setDefaultCommand(new HoldArm(arm, CONFIG.CONTROL_SURFACES.ARM.TICKS));  
+        arm.setDefaultCommand(new HoldArm(arm, CONFIG.CONTROL_SURFACES.ARM.TICKS)); 
+        
+        register(imu);
+        imu.setDefaultCommand(new InstantCommand(() -> {
+            Telemetry.addData("IMU Heading: ", imu.getHeading());
+        }, imu));
 
         // --- Gamepad1 ---
-//        Does drivy stuff
+        // Drivey
         new StickTrigger(pad1, Stick.LEFT_X, CONFIG.CONTROLLER.STICK_DEADZONE)
-                .or(new StickTrigger(pad1, Stick.RIGHT_Y, CONFIG.CONTROLLER.STICK_DEADZONE))
-//                .or(pad1.getTrigger(GamepadKeys.Trigger.LEFT_TRIGGER))
-                .whileActiveContinuous(new MoveRobot(pad1, chassis, imu))
-                .whenInactive(new InstantCommand(() -> {
-                    chassis.stop();
-                }, chassis));
+        .or(new StickTrigger(pad1, Stick.RIGHT_Y, CONFIG.CONTROLLER.STICK_DEADZONE))
+        .or(new Trigger((new TriggerReader(pad1, GamepadKeys.Trigger.RIGHT_TRIGGER))::isDown))
+        .or(new Trigger((new TriggerReader(pad1, GamepadKeys.Trigger.LEFT_TRIGGER))::isDown))
+        .whileActiveContinuous(new MoveRobot(pad1, chassis, imu))
+        .whenInactive(new InstantCommand(() -> {
+            chassis.stop();
+        }, chassis));
 
         // --- Gamepad2 ---
         // Arm
