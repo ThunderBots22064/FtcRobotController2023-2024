@@ -47,6 +47,7 @@ public class Main extends CommandOpMode {
         register(imu);
         imu.setDefaultCommand(new RunCommand(() -> {
             telemetry.addData("IMU Heading: ", imu.getHeading());
+            telemetry.update();
         }, imu));
 
         // --- Gamepad1 ---
