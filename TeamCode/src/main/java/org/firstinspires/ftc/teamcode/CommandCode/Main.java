@@ -20,7 +20,7 @@ public class Main extends CommandOpMode {
     ArmSubsystem arm;
     DroneSubsystem drone;
     HookSubsystem hook;
-    DrivetrainSubsystem chassis;
+    DrivetrainSubsystem drivetrain;
     ImuSubsystem imu;
 
     GamepadEx pad1;
@@ -30,7 +30,7 @@ public class Main extends CommandOpMode {
         arm = new ArmSubsystem(hardwareMap);
         drone = new DroneSubsystem(hardwareMap);
         hook = new HookSubsystem(hardwareMap);
-        chassis = new DrivetrainSubsystem(hardwareMap);
+        drivetrain = new DrivetrainSubsystem(hardwareMap);
         imu = new ImuSubsystem(hardwareMap);
 
 
@@ -52,21 +52,21 @@ public class Main extends CommandOpMode {
         .or(new StickTrigger(pad1, Stick.RIGHT_Y, CONFIG.CONTROLLER.STICK_DEADZONE))
         .or(new Trigger((new TriggerReader(pad1, GamepadKeys.Trigger.RIGHT_TRIGGER))::isDown))
         .or(new Trigger((new TriggerReader(pad1, GamepadKeys.Trigger.LEFT_TRIGGER))::isDown))
-        .whileActiveContinuous(new MoveRobot(pad1, chassis, imu))
+        .whileActiveContinuous(new MoveRobot(pad1, drivetrain, imu))
         .whenInactive(new InstantCommand(() -> {
-            chassis.stop();
-        }, chassis));
+            drivetrain.stop();
+        }, drivetrain));
 
         // Speed Control
         new GamepadButton(pad1, GamepadKeys.Button.LEFT_BUMPER)
         .whenPressed(new InstandCommand(() -> {
-            chassis.decreaseSpeed();
-        }, chassis));
+            drivetrain.decreaseSpeed();
+        }, drivetrain));
 
         new GamepadButton(pad1, GamepadKeys.Button.RIGHT_BUMPER)
         .whenPressed(new InstandCommand(() -> {
-            chassis.increaseSpeed();
-        }, chassis));
+            drivetrain.increaseSpeed();
+        }, drivetrain));
 
         // --- Gamepad2 ---
         // Arm

@@ -10,7 +10,7 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import org.firstinspires.ftc.teamcode.CONFIG.DRIVETRAIN;
 
 public class DrivetrainSubsystem extends SubsystemBase {
-    private final MecanumDrive chassis;
+    private final MecanumDrive drivetrain;
     private final Motor mtFL, mtFR, mtBL, mtBR;
     private float speed;
 
@@ -25,7 +25,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
         mtBL.setInverted(DRIVETRAIN.BL_DIR_B);
         mtBR.setInverted(DRIVETRAIN.BR_DIR_B);
         
-        chassis = new MecanumDrive(
+        drivetrain = new MecanumDrive(
             mtFL, 
             mtFR,
             mtBL, 
@@ -33,7 +33,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
         );
 
         speed = DRIVETRAIN.SPEED_DEF;
-        chassis.setMaxSpeed(DRIVETRAIN.SPEED_MAX);
+        drivetrain.setMaxSpeed(DRIVETRAIN.SPEED_MAX);
     }
 
     /**
@@ -43,7 +43,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
      * @param turnSpeed the rotation speed (+ = Clockwise, - = Anti-Clockwise)
      */
     public void driveRobotCentric(double strafeSpeed, double forwardSpeed, double turnSpeed) {
-        chassis.driveRobotCentric(strafeSpeed * speed, forwardSpeed * speed, turnSpeed * speed);
+        drivetrain.driveRobotCentric(strafeSpeed * speed, forwardSpeed * speed, turnSpeed * speed);
     }
 
     /**
@@ -54,14 +54,14 @@ public class DrivetrainSubsystem extends SubsystemBase {
      * @param heading the heading IN DEGREES of the robot
      */
     public void driveFieldCentric(double strafeSpeed, double forwardSpeed, double turnSpeed, double heading) {
-        chassis.driveFieldCentric(strafeSpeed, forwardSpeed, turnSpeed, heading);
+        drivetrain.driveFieldCentric(strafeSpeed, forwardSpeed, turnSpeed, heading);
     }
 
     /**
      * Stops the robot
      */
     public void stop() {
-        chassis.stop();
+        drivetrain.stop();
     }
 
     /**
