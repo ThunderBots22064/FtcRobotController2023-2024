@@ -57,6 +57,17 @@ public class Main extends CommandOpMode {
             chassis.stop();
         }, chassis));
 
+        // Speed Control
+        new GamepadButton(pad1, GamepadKeys.Button.LEFT_BUMPER)
+        .whenPressed(new InstandCommand(() -> {
+            chassis.decreaseSpeed();
+        }, chassis));
+
+        new GamepadButton(pad1, GamepadKeys.Button.RIGHT_BUMPER)
+        .whenPressed(new InstandCommand(() -> {
+            chassis.increaseSpeed();
+        }, chassis));
+
         // --- Gamepad2 ---
         // Arm
         new StickTrigger(pad2, Stick.LEFT_Y, CONFIG.CONTROLLER.STICK_DEADZONE)
