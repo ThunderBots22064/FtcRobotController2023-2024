@@ -37,6 +37,7 @@ import android.util.Size;
 import org.firstinspires.ftc.robotcore.external.JavaUtil;
 import org.firstinspires.ftc.teamcode.Auto.CONFIGAuto;
 
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.CRServo;
@@ -59,7 +60,7 @@ import java.util.List;
  * Use Android Studio to Copy this Class, and Paste it into your team's code folder with a new name.
  * Remove or comment out the @Disabled line to add this OpMode to the Driver Station OpMode list.
  */
-@TeleOp(name = "Concept: TensorFlow Object Detection", group = "Concept")
+@Autonomous(name = "Concept: TensorFlow Object Detection", group = "Concept")
 //@Disabled
 public class BlueAuto extends LinearOpMode {
     /*** CONFIG PRESETS ***/
@@ -190,7 +191,9 @@ public class BlueAuto extends LinearOpMode {
         if (opModeIsActive()) {
             // this is where run blocks would go if this was a block code
             forward(1, 0.25);
+            turn_Left(0.4, 0.25);
             stop(2);
+
             while (opModeIsActive()) {
                 // this is where loop blocks would go if this was a block code
                 telemetryTfod();
@@ -203,8 +206,10 @@ public class BlueAuto extends LinearOpMode {
 
                 if (JavaUtil.listLength(currentRecognitions) == 0 && false == have_seen) {
                     telemetry.addData("TFOD", "I'm blind");
+                    visionPortal.stopStreaming();
                     turn_Left(0.4, 0.25);
                     stop(1);
+                    visionPortal.resumeStreaming();
                     telemetryTfod();
                     // Push telemetry to the Driver Station
                     telemetry.update();
@@ -220,6 +225,7 @@ public class BlueAuto extends LinearOpMode {
                             stop(1);
                             have_seen = true;
                         }
+                        break;
                     }
             }
         }
