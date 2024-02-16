@@ -26,18 +26,21 @@ public class DrivetrainSubsystem extends SubsystemBase {
         mtBR.setInverted(DRIVETRAIN.BR_DIR_B);
         
         chassis = new MecanumDrive(
-            mtFL, mtFR,
-            mtBL, mtBR
+            mtFL, 
+            mtFR,
+            mtBL, 
+            mtBR
         );
 
         speed = DRIVETRAIN.SPEED_DEF;
+        chassis.setMaxSpeed(DRIVETRAIN.SPEED_MAX);
     }
 
     /**
      * Controls the robot relative to the robot itself
-     * @param strafeSpeed the horizontal speed
-     * @param forwardSpeed the vertical speed
-     * @param turnSpeed the rotation speed
+     * @param strafeSpeed the horizontal speed (+ = Right, - = Left)
+     * @param forwardSpeed the vertical speed (+ = Forward, - = Backward)
+     * @param turnSpeed the rotation speed (+ = Clockwise, - = Anti-Clockwise)
      */
     public void driveRobotCentric(double strafeSpeed, double forwardSpeed, double turnSpeed) {
         chassis.driveRobotCentric(strafeSpeed * speed, forwardSpeed * speed, turnSpeed * speed);
@@ -45,9 +48,9 @@ public class DrivetrainSubsystem extends SubsystemBase {
 
     /**
      * Controls the robot relative to the field
-     * @param strafeSpeed the horizontal speed
-     * @param forwardSpeed the vertical speed
-     * @param turnSpeed the rotation speed
+     * @param strafeSpeed the horizontal speed (+ = Right of controller, - = Left of controller)
+     * @param forwardSpeed the vertical speed (+ = Away from controller, - = Towards controller)
+     * @param turnSpeed the rotation speed (+ = Clockwise, - = Anti-Clockwise)
      * @param heading the heading IN DEGREES of the robot
      */
     public void driveFieldCentric(double strafeSpeed, double forwardSpeed, double turnSpeed, double heading) {
