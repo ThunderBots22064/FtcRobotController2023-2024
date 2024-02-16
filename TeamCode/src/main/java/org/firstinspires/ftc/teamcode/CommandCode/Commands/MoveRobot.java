@@ -27,10 +27,10 @@ public class MoveRobot extends CommandBase {
     public void execute() {
         double turn = (pad.getTrigger(GamepadKeys.Trigger.LEFT_TRIGGER) < pad.getTrigger(GamepadKeys.Trigger.RIGHT_TRIGGER)) ? 1.0 : -1.0;
         
-        float strafe = pad.getLeftX();
+        double strafe = pad.getLeftX();
         strafe = strafe < CONTROLLER.STICK_DEADZONE ? 0 : strafe;
 
-        float forward = pad.getRightY();
+        double forward = pad.getRightY();
         forward = forward < CONTROLLER.STICK_DEADZONE ? 0 : forward;
 
         chassis.driveFieldCentric(strafe, forward, turn, imu.getHeading());

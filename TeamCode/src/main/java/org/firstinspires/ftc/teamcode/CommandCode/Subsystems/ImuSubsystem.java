@@ -32,13 +32,15 @@ public class ImuSubsystem extends SubsystemBase {
     public double getHeading() {
         double heading = imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.DEGREES); /*imu.getRotation2d().getDegrees(); */
 
-
         // Converts the -180 to 180 degrees into a 0 to 360 degrees value
         if (heading < 0) {
-            heading -= heading;
-            heading += 180;
+            heading += 360;
         }
 
         return heading;
+    }
+
+    public void resetHeading() {
+        imu.resetYaw();
     }
 }

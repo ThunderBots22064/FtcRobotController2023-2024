@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.CommandCode;
 
+
 import com.arcrobotics.ftclib.command.button.*;
 import com.arcrobotics.ftclib.gamepad.GamepadEx;
 import com.arcrobotics.ftclib.gamepad.GamepadKeys;
@@ -8,8 +9,9 @@ import com.arcrobotics.ftclib.command.InstantCommand;
 import com.arcrobotics.ftclib.gamepad.TriggerReader;
 
 import com.qualcomm.robotcore.eventloop.opmode.*;
-import org.firstinspires.ftc.robotcore.external.Telemetry;
+import static org.firstinspires.ftc.robotcore.external.Telemetry.*;
 
+import org.checkerframework.checker.units.qual.C;
 import org.firstinspires.ftc.teamcode.CONFIG;
 import org.firstinspires.ftc.teamcode.CommandCode.Commands.*;
 import org.firstinspires.ftc.teamcode.CommandCode.Subsystems.*;
@@ -17,20 +19,22 @@ import org.firstinspires.ftc.teamcode.CommandCode.Subsystems.*;
 
 @TeleOp
 public class Main extends CommandOpMode {
+    DrivetrainSubsystem drivetrain;
     ArmSubsystem arm;
+    ClawSubsystem claw;
     DroneSubsystem drone;
     HookSubsystem hook;
-    DrivetrainSubsystem drivetrain;
     ImuSubsystem imu;
 
     GamepadEx pad1;
     GamepadEx pad2;
 
     public void initialize() {
+        drivetrain = new DrivetrainSubsystem(hardwareMap);
         arm = new ArmSubsystem(hardwareMap);
+        claw = new ClawSubsystem(hardwareMap);
         drone = new DroneSubsystem(hardwareMap);
         hook = new HookSubsystem(hardwareMap);
-        drivetrain = new DrivetrainSubsystem(hardwareMap);
         imu = new ImuSubsystem(hardwareMap);
 
 
@@ -43,30 +47,37 @@ public class Main extends CommandOpMode {
         
         register(imu);
         imu.setDefaultCommand(new InstantCommand(() -> {
-            Telemetry.addData("IMU Heading: ", imu.getHeading());
+            telemetry.addData("IMU Heading: ", imu.getHeading());
         }, imu));
 
         // --- Gamepad1 ---
-        // Drivey
+        // Drive
         new StickTrigger(pad1, Stick.LEFT_X, CONFIG.CONTROLLER.STICK_DEADZONE)
         .or(new StickTrigger(pad1, Stick.RIGHT_Y, CONFIG.CONTROLLER.STICK_DEADZONE))
-        .or(new Trigger((new TriggerReader(pad1, GamepadKeys.Trigger.RIGHT_TRIGGER))::isDown))
-        .or(new Trigger((new TriggerReader(pad1, GamepadKeys.Trigger.LEFT_TRIGGER))::isDown))
-        .whileActiveContinuous(new MoveRobot(pad1, drivetrain, imu))
+        .or(new Trigger(new TriggerReader(pad1, GamepadKeys.Trigger.RIGHT_TRIGGER)::isDown))
+        .or(new Trigger(new TriggerReader(pad1, GamepadKeys.Trigger.LEFT_TRIGGER)::isDown))
+        .whileActiveContinuous(new MoveRobot(pad1, drivetrain, imu), true)
         .whenInactive(new InstantCommand(() -> {
             drivetrain.stop();
         }, drivetrain));
 
         // Speed Control
         new GamepadButton(pad1, GamepadKeys.Button.LEFT_BUMPER)
-        .whenPressed(new InstandCommand(() -> {
+        .whenPressed(new InstantCommand(() -> {
             drivetrain.decreaseSpeed();
         }, drivetrain));
 
         new GamepadButton(pad1, GamepadKeys.Button.RIGHT_BUMPER)
-        .whenPressed(new InstandCommand(() -> {
+        .whenPressed(new InstantCommand(() -> {
             drivetrain.increaseSpeed();
         }, drivetrain));
+
+        // Reset IMU Heading
+        new GamepadButton(pad1, GamepadKeys.Button.START)
+        .and(new GamepadButton(pad1, GamepadKeys.Button.DPAD_UP))
+        .whenActive(new InstantCommand(() -> {
+            imu.resetHeading();
+        }, imu), false);
 
         // --- Gamepad2 ---
         // Arm
@@ -94,5 +105,22 @@ public class Main extends CommandOpMode {
         }, hook)).whenReleased(new InstantCommand(() -> {
             hook.stop();
         }, hook));
+
+        // Claw
+        new Trigger(new TriggerReader(pad2, GamepadKeys.Trigger.RIGHT_TRIGGER)::isDown)
+        .whenActive(new InstantCommand(() -> {
+            claw.grip();
+        }, claw))
+        .whenInactive(new InstantCommand(() -> {
+            claw.stop();
+        }, claw));
+
+        new Trigger(new TriggerReader(pad2, GamepadKeys.Trigger.LEFT_TRIGGER)::isDown)
+        .whenActive(new InstantCommand(() -> {
+            claw.release();
+        }, claw))
+        .whenInactive(new InstantCommand(() -> {
+            claw.stop();
+        }, claw));
     }
 }

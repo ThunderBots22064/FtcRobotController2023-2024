@@ -8,6 +8,7 @@ import org.firstinspires.ftc.teamcode.CONFIG;
 import java.lang.Math;
 
 @TeleOp
+@Deprecated
 public class OldTeleOp extends OpMode {
     /*** CONFIG PRESETS ***/
     float SPEED_DEF = CONFIG.DRIVETRAIN.SPEED_DEF;
