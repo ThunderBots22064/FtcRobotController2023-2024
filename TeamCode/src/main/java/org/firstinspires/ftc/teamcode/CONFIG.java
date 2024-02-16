@@ -48,41 +48,41 @@ public final class CONFIG {
 
     public final static class CONTROL_SURFACES {
         public final static class INTERTIALMU {
-            public final static String IMU_DEVICE = "imu";
+            public final static String DEVICE = "imu";
         }
 		public final static class HOOK {
 	        // The motor name for the hanging mechanism
-	        public final static String HOOK_DEVICE = "thingy";
-	        public final static float HOOK_SPEED_UP = 0.90f;
-	        public final static float HOOK_SPEED_DOWN = 0.60f;
+	        public final static String DEVICE = "thingy";
+	        public final static float SPEED_UP = 0.90f;
+	        public final static float SPEED_DOWN = 0.60f;
 
-            public final static DcMotorSimple.Direction HOOK_DIR = DcMotorSimple.Direction.FORWARD;
-	        public final static int HOOK_FLOOR = 0;
-	        public final static int HOOK_ROOF = 9200;
+            public final static DcMotorSimple.Direction DIR = DcMotorSimple.Direction.FORWARD;
+	        public final static int FLOOR = 0;
+	        public final static int ROOF = 9200;
 		}
 
 		public final static class DRONE {
 	        // String value that corresponds to the servo 
 			// device for the servo which launches the paper airplane
-	        public final static String DRONE_DEVICE = "arm";
-	        public final static DcMotorSimple.Direction DRONE_DIR = DcMotorSimple.Direction.REVERSE;
+	        public final static String DEVICE = "arm";
+	        public final static DcMotorSimple.Direction DIR = DcMotorSimple.Direction.REVERSE;
 		}
 		
 		public final static class CLAW {
 	        // Hardware Maps for Claw Pincer Servos
-	        public final static String CLAW1_DEVICE = "Claw1";
-	        public final static String CLAW2_DEVICE = "Claw2";
-	        public final static DcMotorSimple.Direction CLAW1_DIR = DcMotorSimple.Direction.REVERSE;
-	        public final static DcMotorSimple.Direction CLAW2_DIR = DcMotorSimple.Direction.FORWARD;
+	        public final static String DEVICE1 = "Claw1";
+	        public final static String DEVICE2 = "Claw2";
+	        public final static DcMotorSimple.Direction DIR1 = DcMotorSimple.Direction.REVERSE;
+	        public final static DcMotorSimple.Direction DIR2 = DcMotorSimple.Direction.FORWARD;
 		}
         
 		public final static class ARM {
 			// Hardware Map for the Arm
-	        public final static String ARM1_DEVICE = "Arm1";
-            public final static String ARM2_DEVICE = "Arm2";
-	        public final static DcMotorSimple.Direction ARM1_DIR = DcMotorSimple.Direction.FORWARD;
-            public final static DcMotorSimple.Direction ARM2_DIR = DcMotorSimple.Direction.REVERSE;
-	        public final static float ARM_SPEED = 0.20f;
+	        public final static String DEVICE1 = "Arm1";
+            public final static String DEVICE2 = "Arm2";
+	        public final static DcMotorSimple.Direction DIR1 = DcMotorSimple.Direction.FORWARD;
+            public final static DcMotorSimple.Direction DIR2 = DcMotorSimple.Direction.REVERSE;
+	        public final static float SPEED = 0.20f;
 			
 			/*--- PID Control for Arm ---*/
 	        // K Proportional Coefficient

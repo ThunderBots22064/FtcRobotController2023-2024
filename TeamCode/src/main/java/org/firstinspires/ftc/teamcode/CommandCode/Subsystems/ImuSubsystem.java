@@ -17,7 +17,7 @@ public class ImuSubsystem extends SubsystemBase {
 
 
     public ImuSubsystem(HardwareMap hardMap) {
-        imu = new RevIMU(hardMap, INTERTIALMU.IMU_DEVICE);
+        imu = new RevIMU(hardMap, INTERTIALMU.DEVICE);
         imu.init();
         /*imu = hardMap.get(IMU.class, INTERTIALMU.IMU_DEVICE);
 

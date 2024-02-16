@@ -11,24 +11,24 @@ public class ArmSubsystem extends SubsystemBase {
     private final DcMotor mtArm2;
 
     public ArmSubsystem(final HardwareMap hardMap) {
-        mtArm1 = hardMap.get(DcMotor.class, ARM.ARM1_DEVICE);
-        mtArm2 = hardMap.get(DcMotor.class, ARM.ARM2_DEVICE);
+        mtArm1 = hardMap.get(DcMotor.class, ARM.DEVICE1);
+        mtArm2 = hardMap.get(DcMotor.class, ARM.DEVICE2);
 
-        mtArm1.setDirection(ARM.ARM1_DIR);
-        mtArm1.setDirection(ARM.ARM2_DIR);
+        mtArm1.setDirection(ARM.DIR1);
+        mtArm1.setDirection(ARM.DIR2);
 
         mtArm1.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         mtArm2.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
     }
 
     public void raise() {
-        mtArm1.setPower(ARM.ARM_SPEED);
-        mtArm2.setPower(ARM.ARM_SPEED);
+        mtArm1.setPower(ARM.SPEED);
+        mtArm2.setPower(ARM.SPEED);
     }
 
     public void lower() {
-        mtArm1.setPower(-ARM.ARM_SPEED);
-        mtArm2.setPower(-ARM.ARM_SPEED);
+        mtArm1.setPower(-ARM.SPEED);
+        mtArm2.setPower(-ARM.SPEED);
     }
 
     public int getAvgPos() {

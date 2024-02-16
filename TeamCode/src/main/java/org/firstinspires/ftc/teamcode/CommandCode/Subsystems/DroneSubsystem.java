@@ -10,9 +10,9 @@ public class DroneSubsystem extends SubsystemBase {
     private final CRServo svDrone;
 
     public DroneSubsystem(final HardwareMap hardMap) {
-        svDrone = hardMap.get(CRServo.class, DRONE.DRONE_DEVICE);
+        svDrone = hardMap.get(CRServo.class, DRONE.DEVICE);
 
-        svDrone.setDirection(DRONE.DRONE_DIR);
+        svDrone.setDirection(DRONE.DIR);
     }
 
     public void fire() {

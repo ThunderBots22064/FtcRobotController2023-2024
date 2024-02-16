@@ -19,9 +19,9 @@ public class OldTeleOp extends OpMode {
     float STICK_DEADZONE = CONFIG.CONTROLLER.STICK_DEADZONE;
     float TRIGGER_DEADZONE = CONFIG.CONTROLLER.TRIGGER_DEADZONE;
     
-    float HOOK_SPEED_UP = CONFIG.CONTROL_SURFACES.HOOK.HOOK_SPEED_UP;
-    float HOOK_SPEED_DOWN = CONFIG.CONTROL_SURFACES.HOOK.HOOK_SPEED_DOWN;
-    float ARM_SPEED = CONFIG.CONTROL_SURFACES.ARM.ARM_SPEED;
+    float HOOK_SPEED_UP = CONFIG.CONTROL_SURFACES.HOOK.SPEED_UP;
+    float HOOK_SPEED_DOWN = CONFIG.CONTROL_SURFACES.HOOK.SPEED_DOWN;
+    float ARM_SPEED = CONFIG.CONTROL_SURFACES.ARM.SPEED;
 
     // Power Matrixes for driving
     public final static float[][] DRIVE_ARRAY = {
@@ -146,31 +146,31 @@ public class OldTeleOp extends OpMode {
         mtBR.setDirection(CONFIG.DRIVETRAIN.BR_DIR);
 
         // Drone Servo
-        svDrone = hardwareMap.get(CRServo.class, CONFIG.CONTROL_SURFACES.DRONE.DRONE_DEVICE);
-        svDrone.setDirection(CONFIG.CONTROL_SURFACES.DRONE.DRONE_DIR);
+        svDrone = hardwareMap.get(CRServo.class, CONFIG.CONTROL_SURFACES.DRONE.DEVICE);
+        svDrone.setDirection(CONFIG.CONTROL_SURFACES.DRONE.DIR);
         
         // Hook Motor
-        mtHook = hardwareMap.get(DcMotor.class, CONFIG.CONTROL_SURFACES.HOOK.HOOK_DEVICE);
+        mtHook = hardwareMap.get(DcMotor.class, CONFIG.CONTROL_SURFACES.HOOK.DEVICE);
         // Reset Hook Encoder
         mtHook.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         mtHook.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         
         // Arm Motors
-        mtArm1 = hardwareMap.get(DcMotor.class, CONFIG.CONTROL_SURFACES.ARM.ARM1_DEVICE);
-        mtArm1.setDirection(CONFIG.CONTROL_SURFACES.ARM.ARM1_DIR);
+        mtArm1 = hardwareMap.get(DcMotor.class, CONFIG.CONTROL_SURFACES.ARM.DEVICE1);
+        mtArm1.setDirection(CONFIG.CONTROL_SURFACES.ARM.DIR1);
         mtArm1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         mtArm1.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
-        mtArm2 = hardwareMap.get(DcMotor.class, CONFIG.CONTROL_SURFACES.ARM.ARM2_DEVICE);
-        mtArm2.setDirection(CONFIG.CONTROL_SURFACES.ARM.ARM2_DIR);
+        mtArm2 = hardwareMap.get(DcMotor.class, CONFIG.CONTROL_SURFACES.ARM.DEVICE2);
+        mtArm2.setDirection(CONFIG.CONTROL_SURFACES.ARM.DIR2);
         mtArm2.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         mtArm2.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         
 		// Claw Servos
-        svClaw1 = hardwareMap.get(CRServo.class, CONFIG.CONTROL_SURFACES.CLAW.CLAW1_DEVICE);
-        svClaw2 = hardwareMap.get(CRServo.class, CONFIG.CONTROL_SURFACES.CLAW.CLAW2_DEVICE);
-        svClaw1.setDirection(CONFIG.CONTROL_SURFACES.CLAW.CLAW1_DIR);
-        svClaw2.setDirection(CONFIG.CONTROL_SURFACES.CLAW.CLAW2_DIR);
+        svClaw1 = hardwareMap.get(CRServo.class, CONFIG.CONTROL_SURFACES.CLAW.DEVICE1);
+        svClaw2 = hardwareMap.get(CRServo.class, CONFIG.CONTROL_SURFACES.CLAW.DEVICE2);
+        svClaw1.setDirection(CONFIG.CONTROL_SURFACES.CLAW.DIR1);
+        svClaw2.setDirection(CONFIG.CONTROL_SURFACES.CLAW.DIR2);
     }
 
     public void loop() {

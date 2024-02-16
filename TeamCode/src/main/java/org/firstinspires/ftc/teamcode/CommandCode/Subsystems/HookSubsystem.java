@@ -9,19 +9,19 @@ public class HookSubsystem extends SubsystemBase {
     private final DcMotor mtHook;
     
     public HookSubsystem(HardwareMap hardMap) {
-        mtHook = hardMap.get(DcMotor.class, HOOK.HOOK_DEVICE);
+        mtHook = hardMap.get(DcMotor.class, HOOK.DEVICE);
 
-        mtHook.setDirection(HOOK.HOOK_DIR);
+        mtHook.setDirection(HOOK.DIR);
 
         mtHook.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
     }
 
     public void raise() {
-        mtHook.setPower(HOOK.HOOK_SPEED_UP);
+        mtHook.setPower(HOOK.SPEED_UP);
     }
 
     public void lower() {
-        mtHook.setPower(HOOK.HOOK_SPEED_DOWN);
+        mtHook.setPower(HOOK.SPEED_DOWN);
     }
 
     public void stop() {
