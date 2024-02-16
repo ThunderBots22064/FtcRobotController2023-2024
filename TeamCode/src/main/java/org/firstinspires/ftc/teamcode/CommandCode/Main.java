@@ -6,6 +6,7 @@ import com.arcrobotics.ftclib.gamepad.GamepadEx;
 import com.arcrobotics.ftclib.gamepad.GamepadKeys;
 import com.arcrobotics.ftclib.command.CommandOpMode;
 import com.arcrobotics.ftclib.command.InstantCommand;
+import com.arcrobotics.ftclib.command.RunCommand;
 import com.arcrobotics.ftclib.gamepad.TriggerReader;
 
 import com.qualcomm.robotcore.eventloop.opmode.*;
@@ -44,7 +45,7 @@ public class Main extends CommandOpMode {
         arm.setDefaultCommand(new HoldArm(arm, CONFIG.CONTROL_SURFACES.ARM.TICKS)); 
         
         register(imu);
-        imu.setDefaultCommand(new InstantCommand(() -> {
+        imu.setDefaultCommand(new RunCommand(() -> {
             telemetry.addData("IMU Heading: ", imu.getHeading());
         }, imu));
 
