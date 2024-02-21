@@ -24,7 +24,7 @@ import org.firstinspires.ftc.vision.tfod.TfodProcessor;
 
 import java.util.List;
 
-@Autonomous(name = "Concept: TensorFlow Object Detection", group = "Concept")
+@Autonomous(name = "RedAuto", group = "Concept")
 //@Disabled
 public class RedAuto extends LinearOpMode {
     /*** CONFIG PRESETS ***/

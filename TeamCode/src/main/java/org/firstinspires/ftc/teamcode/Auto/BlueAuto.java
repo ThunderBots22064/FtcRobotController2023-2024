@@ -60,7 +60,7 @@ import java.util.List;
  * Use Android Studio to Copy this Class, and Paste it into your team's code folder with a new name.
  * Remove or comment out the @Disabled line to add this OpMode to the Driver Station OpMode list.
  */
-@Autonomous(name = "Concept: TensorFlow Object Detection", group = "Concept")
+@Autonomous(name = "BlueAuto", group = "Concept")
 //@Disabled
 public class BlueAuto extends LinearOpMode {
     /*** CONFIG PRESETS ***/
@@ -190,8 +190,8 @@ public class BlueAuto extends LinearOpMode {
 
         if (opModeIsActive()) {
             // this is where run blocks would go if this was a block code
-            forward(1, 0.25);
-            turn_Left(0.4, 0.25);
+            forward(1.25, 0.25);
+            turn_Right(0.6, 0.25);
             stop(2);
 
             while (opModeIsActive()) {
@@ -204,26 +204,24 @@ public class BlueAuto extends LinearOpMode {
                 // Get a list of recognitions from TFOD.
                 List<Recognition> currentRecognitions = tfod.getRecognitions();
 
-                if (JavaUtil.listLength(currentRecognitions) == 0 && false == have_seen) {
+                if (JavaUtil.listLength(currentRecognitions) == 0 && !have_seen) {
                     telemetry.addData("TFOD", "I'm blind");
-                    visionPortal.stopStreaming();
-                    turn_Left(0.4, 0.25);
+                    turn_Left(0.6, 0.25);
                     stop(1);
-                    visionPortal.resumeStreaming();
                     telemetryTfod();
                     // Push telemetry to the Driver Station
                     telemetry.update();
                 } else
                     for (Recognition recognition : currentRecognitions) {
                         if (recognition.getLabel().equals("blue")) {
+                            have_seen = true;
                             telemetryTfod();
                             // Push telemetry to the Driver Station.
                             telemetry.update();
                             telemetry.addData("TFOD", "I'm feeling blue");
                             forward(0.75, 0.25);
                             backward(0.25, 0.25);
-                            stop(1);
-                            have_seen = true;
+                            stop(10);
                         }
                         break;
                     }
