@@ -102,9 +102,10 @@ public class RedAuto extends LinearOpMode {
         sleep((long) (time__in_seconds_ * 1000));
     }
 
+    boolean have_seen = false;
+
     @Override
     public void runOpMode() {
-        boolean have_seen = false;
         // Setup motors
         // Motors are first identified with the 'mt' (Motor)
         // They're then identified with F (Front) or B (Back)
