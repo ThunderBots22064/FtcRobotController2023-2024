@@ -28,4 +28,29 @@ public class TestMove extends CommandBase {
         this.imu = imu;
         this.pad = pad;
     }
+
+    @Override
+    public void execute() {
+        double stafe = pad.getLeftX();
+        double vertical = pad.getLeftY();
+        double turn = pad.getRightX();
+        
+        telemetry.addData("Strafe Value: ", strafe);
+        telemetry.addData("Vertical Value: ", vertical);
+        telemetry.addData("Turn Value: ", turn);
+
+        telemetry.addData("IMU Heading Raw: ", imu.getHeadingRaw());
+        telemetry.addData("IMU Heading Scaled: ", imu.getHeading());
+
+        drivetrain.driveRobotCentric(
+            pad.getLeftX(),
+            pad.getLeftY(),
+            pad.getRightX()
+        );
+    }
+
+    @Override
+    public void end(boolean interrupted) {
+        drivetrain.stop();
+    }
 }
