@@ -14,7 +14,7 @@ public class TestMove extends CommandBase {
     private final DrivetrainSubsystem drivetrain;
     private final ImuSubsystem imu;
     private final GamepadEx pad;
-    private final Teleemtry telemetry;
+    private final Telemetry telemetry;
     
     /**
      * Creates a new TestMove command that tests the drivetrain
@@ -27,6 +27,7 @@ public class TestMove extends CommandBase {
         this.drivetrain = drivetrain;
         this.imu = imu;
         this.pad = pad;
+        this.telemetry = telemetry;
 
         addRequirements(drivetrain);
     }
