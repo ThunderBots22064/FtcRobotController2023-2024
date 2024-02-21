@@ -34,7 +34,7 @@ public class TestMove extends CommandBase {
 
     @Override
     public void execute() {
-        double stafe = pad.getLeftX();
+        double strafe = pad.getLeftX();
         double vertical = pad.getLeftY();
         double turn = pad.getRightX();
         
