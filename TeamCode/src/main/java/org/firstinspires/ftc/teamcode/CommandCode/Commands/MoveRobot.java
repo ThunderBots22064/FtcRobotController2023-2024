@@ -10,16 +10,16 @@ import org.firstinspires.ftc.teamcode.CommandCode.Subsystems.ImuSubsystem;
 import org.firstinspires.ftc.teamcode.CONFIG.CONTROLLER;
 
 public class MoveRobot extends CommandBase {
-    private final DrivetrainSubsystem chassis;
+    private final DrivetrainSubsystem drivetrain;
     private final ImuSubsystem imu;
     private final GamepadEx pad;
 
-    public MoveRobot(GamepadEx pad, DrivetrainSubsystem chassis, ImuSubsystem imu) {
+    public MoveRobot(GamepadEx pad, DrivetrainSubsystem drivetrain, ImuSubsystem imu) {
         this.pad = pad;
-        this.chassis = chassis;
+        this.drivetrain = drivetrain;
         this.imu = imu;
 
-        addRequirements(chassis);
+        addRequirements(drivetrain);
         addRequirements(imu);
     }
 
@@ -33,11 +33,11 @@ public class MoveRobot extends CommandBase {
         double forward = pad.getRightY();
         forward = forward < CONTROLLER.STICK_DEADZONE ? 0 : forward;
 
-        chassis.driveFieldCentric(strafe, forward, turn, imu.getHeading());
+        drivetrain.driveFieldCentric(strafe, forward, turn, imu.getHeading());
     }
 
     @Override
     public void end(boolean interrupted) {
-        chassis.stop();
+        drivetrain.stop();
     }
 }
