@@ -31,7 +31,14 @@ public class MoveRobot extends CommandBase {
 
     @Override
     public void execute() {
-        double turn = (pad.getTrigger(GamepadKeys.Trigger.LEFT_TRIGGER) < pad.getTrigger(GamepadKeys.Trigger.RIGHT_TRIGGER)) ? 1.0 : -1.0;
+        double turn = 0.0;
+
+        double leftTrigger = pad.getTrigger(GamepadKeys.Trigger.LEFT_TRIGGER);
+        double rightTrigger = pad.getTrigger(GamepadKeys.Trigger.RIGHT_TRIGGER);
+
+        if (leftTrigger >= CONTROLLER.TRIGGER_DEADZONE || rightTrigger >= CONTROLLER.TRIGGER_DEADZONE) {
+            turn = leftTrigger > rightTrigger ? -1.0 : 1.0;
+        }
         
         double strafe = pad.getLeftX();
         strafe = strafe < CONTROLLER.STICK_DEADZONE ? 0 : strafe;
