@@ -52,6 +52,7 @@ public class Main extends CommandOpMode {
 
         // --- Gamepad1 ---
         // Drive
+        /*
         new StickTrigger(pad1, Stick.LEFT_X, CONFIG.CONTROLLER.STICK_DEADZONE)
         .or(new StickTrigger(pad1, Stick.RIGHT_Y, CONFIG.CONTROLLER.STICK_DEADZONE))
         .or(new Trigger(new TriggerReader(pad1, GamepadKeys.Trigger.RIGHT_TRIGGER)::isDown))
@@ -60,6 +61,9 @@ public class Main extends CommandOpMode {
         .whenInactive(new InstantCommand(() -> {
             drivetrain.stop();
         }, drivetrain));
+        */
+        new GamepadButton(pad1, GamepadKeys.Button.B)
+        .whileHeld(new TestMove(pad1, drivetrain, imu, telemetry));
 
         // Speed Control
         new GamepadButton(pad1, GamepadKeys.Button.LEFT_BUMPER)
