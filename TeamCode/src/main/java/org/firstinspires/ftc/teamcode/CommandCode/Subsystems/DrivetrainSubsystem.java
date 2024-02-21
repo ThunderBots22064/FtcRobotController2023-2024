@@ -24,12 +24,15 @@ public class DrivetrainSubsystem extends SubsystemBase {
         mtFR.setInverted(DRIVETRAIN.FR_DIR_B);
         mtBL.setInverted(DRIVETRAIN.BL_DIR_B);
         mtBR.setInverted(DRIVETRAIN.BR_DIR_B);
+
+        mtFL.setRunMode(Motor.RunMode.RawPower);
+        mtFR.setRunMode(Motor.RunMode.RawPower);
+        mtBL.setRunMode(Motor.RunMode.RawPower);
+        mtBR.setRunMode(Motor.RunMode.RawPower);
         
         drivetrain = new MecanumDrive(
-            mtFL, 
-            mtFR,
-            mtBL, 
-            mtBR
+            mtFL, mtFR,
+            mtBL, mtBR
         );
 
         speed = DRIVETRAIN.SPEED_DEF;
