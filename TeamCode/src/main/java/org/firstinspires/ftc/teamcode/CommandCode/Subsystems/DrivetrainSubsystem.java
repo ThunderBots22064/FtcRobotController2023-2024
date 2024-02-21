@@ -65,6 +65,14 @@ public class DrivetrainSubsystem extends SubsystemBase {
     }
 
     /**
+     * Gets the robot speed multiplier
+     * @return the robot's speed factor in decimal form
+     */
+    public double getSpeed() {
+        return speed;
+    }
+
+    /**
      * Increases the percent speed of the robot given that it wont exceed the limit speed
      */
     public void increaseSpeed() {
