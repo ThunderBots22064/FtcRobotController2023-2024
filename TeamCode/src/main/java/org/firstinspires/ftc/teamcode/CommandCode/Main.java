@@ -52,18 +52,20 @@ public class Main extends CommandOpMode {
 
         // --- Gamepad1 ---
         // Drive
-        /*
         new StickTrigger(pad1, Stick.LEFT_X, CONFIG.CONTROLLER.STICK_DEADZONE)
         .or(new StickTrigger(pad1, Stick.RIGHT_Y, CONFIG.CONTROLLER.STICK_DEADZONE))
-        .or(new Trigger(new TriggerReader(pad1, GamepadKeys.Trigger.RIGHT_TRIGGER)::isDown))
-        .or(new Trigger(new TriggerReader(pad1, GamepadKeys.Trigger.LEFT_TRIGGER)::isDown))
+        .or(new Trigger((new TriggerReader(pad1, GamepadKeys.Trigger.RIGHT_TRIGGER))::isDown))
+        .or(new Trigger((new TriggerReader(pad1, GamepadKeys.Trigger.LEFT_TRIGGER))::isDown))
         .whileActiveContinuous(new MoveRobot(pad1, drivetrain, imu), true)
         .whenInactive(new InstantCommand(() -> {
             drivetrain.stop();
         }, drivetrain));
-        */
+
+        /*
+        // Test Code for Drivetrain
         new GamepadButton(pad1, GamepadKeys.Button.B)
         .whileHeld(new TestMove(pad1, drivetrain, imu, telemetry));
+         */
 
         // Speed Control
         new GamepadButton(pad1, GamepadKeys.Button.LEFT_BUMPER)
