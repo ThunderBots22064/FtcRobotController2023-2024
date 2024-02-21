@@ -41,10 +41,10 @@ public class MoveRobot extends CommandBase {
         }
         
         double strafe = pad.getLeftX();
-        strafe = strafe < CONTROLLER.STICK_DEADZONE ? 0 : strafe;
+        strafe = strafe < CONTROLLER.STICK_DEADZONE ? 0.0 : strafe;
 
         double forward = pad.getRightY();
-        forward = forward < CONTROLLER.STICK_DEADZONE ? 0 : forward;
+        forward = forward < CONTROLLER.STICK_DEADZONE ? 0.0 : forward;
 
         drivetrain.driveFieldCentric(strafe, forward, turn, imu.getHeading());
     }
