@@ -27,6 +27,8 @@ public class TestMove extends CommandBase {
         this.drivetrain = drivetrain;
         this.imu = imu;
         this.pad = pad;
+
+        addRequirements(drivetrain);
     }
 
     @Override
