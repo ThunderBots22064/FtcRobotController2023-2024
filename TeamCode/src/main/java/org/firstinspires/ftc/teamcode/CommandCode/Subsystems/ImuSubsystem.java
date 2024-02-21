@@ -16,6 +16,10 @@ public class ImuSubsystem extends SubsystemBase {
     private final IMU imu;
 
 
+    /**
+     * Creates an IMU subsystem for managing the onboard Inertial Measurement Unit
+     * @param hardMap the hardware map object
+     */
     public ImuSubsystem(HardwareMap hardMap) {
 //        imu = new RevIMU(hardMap, INTERTIALMU.IMU_DEVICE);
 //        imu.init();
@@ -29,6 +33,10 @@ public class ImuSubsystem extends SubsystemBase {
         );
     }
 
+    /**
+     * Gets the IMU's heading scaled for 0 - 360 degrees
+     * @return the IMU's scaled heading in degrees
+     */
     public double getHeading() {
         double heading = imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.DEGREES); /*imu.getRotation2d().getDegrees(); */
 
@@ -48,6 +56,9 @@ public class ImuSubsystem extends SubsystemBase {
         return imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.DEGREES); /*imu.getRotation2d().getDegrees(); */
     }
 
+    /**
+     * Resets the IMU's heading to the current heading
+     */
     public void resetHeading() {
         imu.resetYaw();
     }
