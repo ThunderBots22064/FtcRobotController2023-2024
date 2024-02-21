@@ -35,7 +35,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
             mtBL, mtBR
         );
 
-        drivetrain.setRightSideInverted(true);
+        drivetrain.setRightSideInverted(false);
 
         speed = DRIVETRAIN.SPEED_DEF;
         drivetrain.setMaxSpeed(DRIVETRAIN.SPEED_MAX);
