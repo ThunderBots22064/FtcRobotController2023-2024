@@ -40,6 +40,14 @@ public class ImuSubsystem extends SubsystemBase {
         return heading;
     }
 
+    /**
+     * Gets the raw yaw value read off the IMU
+     * @return the IMU yaw value in degrees
+     */
+    public double getHeadingRaw() {
+        return imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.DEGREES); /*imu.getRotation2d().getDegrees(); */
+    }
+
     public void resetHeading() {
         imu.resetYaw();
     }
