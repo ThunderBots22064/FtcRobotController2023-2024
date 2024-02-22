@@ -7,6 +7,8 @@ import com.arcrobotics.ftclib.gamepad.GamepadKeys;
 import org.firstinspires.ftc.teamcode.CommandCode.Subsystems.DrivetrainSubsystem;
 import org.firstinspires.ftc.teamcode.CommandCode.Subsystems.ImuSubsystem;
 
+import java.lang.Math;
+
 import org.firstinspires.ftc.teamcode.CONFIG.CONTROLLER;
 
 public class MoveRobot extends CommandBase {
@@ -41,10 +43,14 @@ public class MoveRobot extends CommandBase {
         }
         
         double strafe = pad.getLeftX();
-//        strafe = strafe < CONTROLLER.STICK_DEADZONE ? 0.0 : strafe;
+        if (Math.abs(strafe) < CONTROLLER.STICK_DEADZONE) {
+            strafe = 0.0;
+        }
 
         double forward = pad.getRightY();
-//        forward = forward < CONTROLLER.STICK_DEADZONE ? 0.0 : forward;
+        if (Math.abs(forward) < CONTROLLER.STICK_DEADZONE) {
+            forward = 0.0;
+        }
 
         drivetrain.driveRobotCentric(strafe, forward, turn);//, imu.getHeading());
     }
