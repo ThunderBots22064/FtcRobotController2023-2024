@@ -50,7 +50,8 @@ public class TestMove extends CommandBase {
         drivetrain.driveRobotCentric(
             pad.getLeftX(),
             pad.getLeftY(),
-            pad.getRightX()
+            pad.getRightX(),
+            false
         );
     }
 

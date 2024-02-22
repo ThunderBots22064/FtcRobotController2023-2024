@@ -52,7 +52,7 @@ public class MoveRobot extends CommandBase {
             forward = 0.0;
         }
 
-        drivetrain.driveRobotCentric(strafe, forward, turn);//, imu.getHeading());
+        drivetrain.driveRobotCentric(strafe, forward, turn, CONTROLLER.SQUARE_INPUTS);//, imu.getHeading());
     }
 
     @Override
