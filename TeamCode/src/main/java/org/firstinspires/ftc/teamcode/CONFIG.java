@@ -10,6 +10,9 @@ public final class CONFIG {
         
         // How far a trigger has to move before anything is detected
         public final static float TRIGGER_DEADZONE = 0.50f;
+
+        // Whether or not the drivetrain inputs should be squared allowing for finer control
+        public final static boolean SQUARE_INPUTS = true;
     }
 	
     public final static class DRIVETRAIN {
