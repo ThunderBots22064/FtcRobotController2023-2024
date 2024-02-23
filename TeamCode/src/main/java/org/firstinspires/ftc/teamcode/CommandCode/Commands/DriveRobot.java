@@ -11,7 +11,7 @@ import java.lang.Math;
 
 import org.firstinspires.ftc.teamcode.CONFIG.CONTROLLER;
 
-public class MoveRobot extends CommandBase {
+public class DriveRobot extends CommandBase {
     private final DrivetrainSubsystem drivetrain;
     private final ImuSubsystem imu;
     private final GamepadEx pad;
@@ -22,7 +22,7 @@ public class MoveRobot extends CommandBase {
      * @param drivetrain the drivetrain subsystem
      * @param imu the IMU subsystem
      */
-    public MoveRobot(GamepadEx pad, DrivetrainSubsystem drivetrain, ImuSubsystem imu) {
+    public DriveRobot(GamepadEx pad, DrivetrainSubsystem drivetrain, ImuSubsystem imu) {
         this.pad = pad;
         this.drivetrain = drivetrain;
         this.imu = imu;
