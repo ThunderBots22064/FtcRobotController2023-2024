@@ -141,7 +141,7 @@ public class RedAuto extends LinearOpMode {
         if (opModeIsActive()) {
             // this is where run blocks would go if this was a block code
             forward(1, 0.25);
-            turn_Left(0.4, 0.25);
+            turn_Left(0.5, 0.25);
             stop(2);
 
             while (opModeIsActive()) {
@@ -157,7 +157,7 @@ public class RedAuto extends LinearOpMode {
                 if (JavaUtil.listLength(currentRecognitions) == 0 && false == have_seen) {
                     telemetry.addData("TFOD", "I'm blind");
                     visionPortal.stopStreaming();
-                    turn_Left(0.4, 0.25);
+                    turn_Left(0.5, 0.25);
                     stop(1);
                     visionPortal.resumeStreaming();
                     telemetryTfod();
@@ -170,9 +170,9 @@ public class RedAuto extends LinearOpMode {
                             // Push telemetry to the Driver Station.
                             telemetry.update();
                             telemetry.addData("TFOD", "I'm seeing red");
-                            forward(0.75, 0.25);
+                            forward(1.6, 0.25);
                             backward(0.25, 0.25);
-                            stop(1);
+                            stop(10);
                             have_seen = true;
                         }
                         break;

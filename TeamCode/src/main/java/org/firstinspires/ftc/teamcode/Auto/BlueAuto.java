@@ -191,8 +191,8 @@ public class BlueAuto extends LinearOpMode {
 
         if (opModeIsActive()) {
             // this is where run blocks would go if this was a block code
-            forward(1.25, 0.25);
-            turn_Right(0.6, 0.25);
+            forward(1, 0.25);
+            turn_Right(0.5, 0.25);
             stop(2);
 
             while (opModeIsActive()) {
@@ -207,7 +207,7 @@ public class BlueAuto extends LinearOpMode {
 
                 if (JavaUtil.listLength(currentRecognitions) == 0 && !have_seen) {
                     telemetry.addData("TFOD", "I'm blind");
-                    turn_Left(0.6, 0.25);
+                    turn_Left(0.5, 0.25);
                     stop(1);
                     telemetryTfod();
                     // Push telemetry to the Driver Station
@@ -220,7 +220,7 @@ public class BlueAuto extends LinearOpMode {
                             // Push telemetry to the Driver Station.
                             telemetry.update();
                             telemetry.addData("TFOD", "I'm feeling blue");
-                            forward(0.75, 0.25);
+                            forward(1.6, 0.25);
                             backward(0.25, 0.25);
                             stop(10);
                         }
