@@ -52,7 +52,11 @@ public class MoveRobot extends CommandBase {
             forward = 0.0;
         }
 
-        drivetrain.driveRobotCentric(strafe, forward, turn, CONTROLLER.SQUARE_INPUTS);//, imu.getHeading());
+        if (pad.getButton(GamepadKeys.Button.B)) {
+            drivetrain.driveFieldCentric(strafe, forward, turn, CONTROLLER.SQUARE_INPUTS);
+        } else {
+            drivetrain.driveRobotCentric(strafe, forward, turn, imu.getHeading(), CONTROLLER.SQUARE_INPUTS);
+        }
     }
 
     @Override
