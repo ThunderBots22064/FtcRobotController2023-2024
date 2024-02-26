@@ -42,6 +42,8 @@ public class TestMove extends CommandBase {
         telemetry.addData("Vertical Value: ", vertical);
         telemetry.addData("Turn Value: ", turn);
 
+        telemetry.addData("Right Y: ", pad.getRightY());
+
         telemetry.addData("Speed: ", drivetrain.getSpeed());
 
         telemetry.addData("IMU Heading Raw: ", imu.getHeadingRaw());
