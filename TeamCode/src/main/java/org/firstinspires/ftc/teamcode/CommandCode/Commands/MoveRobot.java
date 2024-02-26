@@ -6,6 +6,7 @@ import com.arcrobotics.ftclib.gamepad.GamepadKeys;
 
 import org.firstinspires.ftc.teamcode.CommandCode.Subsystems.DrivetrainSubsystem;
 import org.firstinspires.ftc.teamcode.CommandCode.Subsystems.ImuSubsystem;
+import org.firstinspires.ftc.robotcore.external.Telemetry;
 
 import java.lang.Math;
 
@@ -16,16 +17,20 @@ public class MoveRobot extends CommandBase {
     private final ImuSubsystem imu;
     private final GamepadEx pad;
 
+    Telemetry telemetry;
+
     /**
      * A command for controlling the robot drivetrain
      * @param pad the gamepad
      * @param drivetrain the drivetrain subsystem
      * @param imu the IMU subsystem
      */
-    public MoveRobot(GamepadEx pad, DrivetrainSubsystem drivetrain, ImuSubsystem imu) {
+    public MoveRobot(GamepadEx pad, DrivetrainSubsystem drivetrain, ImuSubsystem imu, Telemetry telemetry) {
         this.pad = pad;
         this.drivetrain = drivetrain;
         this.imu = imu;
+
+        this.telemetry = telemetry;
 
         addRequirements(drivetrain);
         addRequirements(imu);
@@ -51,6 +56,10 @@ public class MoveRobot extends CommandBase {
         if (Math.abs(forward) < CONTROLLER.STICK_DEADZONE) {
             forward = 0.0;
         }
+
+        telemetry.addData("IMU FROM MOVE: ", imu.getHeading());
+        telemetry.addData("RAW IMU FROM MOVE: ", imu.getHeadingRaw());
+        telemetry.update();
 
         if (pad.getButton(GamepadKeys.Button.B)) {
             drivetrain.driveRobotCentric(strafe, forward, turn, CONTROLLER.SQUARE_INPUTS);
