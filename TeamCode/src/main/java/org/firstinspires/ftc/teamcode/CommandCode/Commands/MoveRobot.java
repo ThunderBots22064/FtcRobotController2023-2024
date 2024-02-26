@@ -47,7 +47,7 @@ public class MoveRobot extends CommandBase {
             strafe = 0.0;
         }
 
-        double forward = pad.getRightY();
+        double forward = -pad.getRightY();
         if (Math.abs(forward) < CONTROLLER.STICK_DEADZONE) {
             forward = 0.0;
         }
