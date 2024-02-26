@@ -61,7 +61,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
      * @param squareInputs whether the inputs should be squared to allow for finer controller
      */
     public void driveFieldCentric(double strafeSpeed, double forwardSpeed, double turnSpeed, double heading, boolean squareInputs) {
-        drivetrain.driveFieldCentric(strafeSpeed, forwardSpeed, turnSpeed, heading, squareInputs);
+        drivetrain.driveFieldCentric(strafeSpeed * speed, forwardSpeed * speed, turnSpeed * speed, heading, squareInputs);
     }
 
     /**
