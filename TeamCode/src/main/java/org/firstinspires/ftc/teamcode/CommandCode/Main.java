@@ -52,8 +52,11 @@ public class Main extends CommandOpMode {
 
         // --- Gamepad1 ---
         // Drive
-        new StickTrigger(pad1, Stick.LEFT_X, CONFIG.CONTROLLER.STICK_DEADZONE)
-        .or(new StickTrigger(pad1, Stick.RIGHT_Y, CONFIG.CONTROLLER.STICK_DEADZONE))
+        Stick verticalCtrl = CONFIG.CONTROLLER.TEAGAN_MODE ? Stick.LEFT_Y : Stick.RIGHT_Y;
+        Stick horizontalCtrl = CONFIG.CONTROLLER.TEAGAN_MODE ? Stick.RIGHT_X : Stick.LEFT_X;
+
+        new StickTrigger(pad1, verticalCtrl, CONFIG.CONTROLLER.STICK_DEADZONE)
+        .or(new StickTrigger(pad1, horizontalCtrl, CONFIG.CONTROLLER.STICK_DEADZONE))
         .or(new Trigger(() -> {return pad1.getTrigger(GamepadKeys.Trigger.LEFT_TRIGGER) > CONFIG.CONTROLLER.TRIGGER_DEADZONE;}))
         .or(new Trigger(() -> {return pad1.getTrigger(GamepadKeys.Trigger.RIGHT_TRIGGER) > CONFIG.CONTROLLER.TRIGGER_DEADZONE;}))
         .whileActiveContinuous(new DriveRobot(pad1, drivetrain, imu, telemetry), true)

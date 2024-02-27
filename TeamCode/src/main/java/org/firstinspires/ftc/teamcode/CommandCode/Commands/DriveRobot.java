@@ -9,6 +9,7 @@ import org.firstinspires.ftc.teamcode.CommandCode.Subsystems.ImuSubsystem;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 
 import java.lang.Math;
+import java.util.function.DoubleSupplier;
 
 import org.firstinspires.ftc.teamcode.CONFIG.CONTROLLER;
 
@@ -16,6 +17,9 @@ public class DriveRobot extends CommandBase {
     private final DrivetrainSubsystem drivetrain;
     private final ImuSubsystem imu;
     private final GamepadEx pad;
+
+    private final DoubleSupplier horizontalCtrl;
+    private final DoubleSupplier verticalCtrl;
 
     Telemetry telemetry;
 
@@ -32,6 +36,9 @@ public class DriveRobot extends CommandBase {
 
         this.telemetry = telemetry;
 
+        horizontalCtrl = CONTROLLER.TEAGAN_MODE ? pad::getRightX : pad::getLeftX;
+        verticalCtrl = CONTROLLER.TEAGAN_MODE ? pad::getLeftY : pad::getRightY;
+
         addRequirements(drivetrain);
         addRequirements(imu);
     }
@@ -47,12 +54,12 @@ public class DriveRobot extends CommandBase {
             turn = leftTrigger > rightTrigger ? -1.0 : 1.0;
         }
         
-        double strafe = pad.getLeftX();
+        double strafe = horizontalCtrl.getAsDouble();
         if (Math.abs(strafe) < CONTROLLER.STICK_DEADZONE) {
             strafe = 0.0;
         }
 
-        double forward = -pad.getRightY();
+        double vertical = -verticalCtrl.getAsDouble();
         if (Math.abs(forward) < CONTROLLER.STICK_DEADZONE) {
             forward = 0.0;
         }
