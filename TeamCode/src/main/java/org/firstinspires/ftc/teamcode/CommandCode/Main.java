@@ -63,7 +63,7 @@ public class Main extends CommandOpMode {
         .or(new StickTrigger(pad1, horizontalCtrl, CONFIG.CONTROLLER.STICK_DEADZONE))
         .or(new Trigger(() -> {return pad1.getTrigger(GamepadKeys.Trigger.LEFT_TRIGGER) > CONFIG.CONTROLLER.TRIGGER_DEADZONE;}))
         .or(new Trigger(() -> {return pad1.getTrigger(GamepadKeys.Trigger.RIGHT_TRIGGER) > CONFIG.CONTROLLER.TRIGGER_DEADZONE;}))
-        .whileActiveContinuous(new DriveRobot(pad1, drivetrain, imu, telemetry), true)
+        .whileActiveContinuous(new DriveRobot(pad1, drivetrain, imu), true)
         .whenInactive(new InstantCommand(() -> {
             drivetrain.stop();
         }, drivetrain));

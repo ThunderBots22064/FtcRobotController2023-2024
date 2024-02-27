@@ -6,7 +6,6 @@ import com.arcrobotics.ftclib.gamepad.GamepadKeys;
 
 import org.firstinspires.ftc.teamcode.CommandCode.Subsystems.DrivetrainSubsystem;
 import org.firstinspires.ftc.teamcode.CommandCode.Subsystems.ImuSubsystem;
-import org.firstinspires.ftc.robotcore.external.Telemetry;
 
 import java.lang.Math;
 import java.util.function.DoubleSupplier;
@@ -21,20 +20,16 @@ public class DriveRobot extends CommandBase {
     private final DoubleSupplier horizontalCtrl;
     private final DoubleSupplier verticalCtrl;
 
-    Telemetry telemetry;
-
     /**
      * A command for controlling the robot drivetrain
      * @param pad the gamepad
      * @param drivetrain the drivetrain subsystem
      * @param imu the IMU subsystem
      */
-    public DriveRobot(GamepadEx pad, DrivetrainSubsystem drivetrain, ImuSubsystem imu, Telemetry telemetry) {
+    public DriveRobot(GamepadEx pad, DrivetrainSubsystem drivetrain, ImuSubsystem imu) {
         this.pad = pad;
         this.drivetrain = drivetrain;
         this.imu = imu;
-
-        this.telemetry = telemetry;
 
         horizontalCtrl = CONTROLLER.TEAGAN_MODE ? pad::getRightX : pad::getLeftX;
         verticalCtrl = CONTROLLER.TEAGAN_MODE ? () -> {return -pad.getLeftY();} : pad::getRightY;
@@ -63,10 +58,6 @@ public class DriveRobot extends CommandBase {
         if (Math.abs(vertical) < CONTROLLER.STICK_DEADZONE) {
             vertical = 0.0;
         }
-
-        telemetry.addData("IMU FROM MOVE: ", imu.getHeading());
-        telemetry.addData("RAW IMU FROM MOVE: ", imu.getHeadingRaw());
-        telemetry.update();
 
         if (pad.getButton(GamepadKeys.Button.B)) {
             drivetrain.driveRobotCentric(strafe, vertical, turn, CONTROLLER.SQUARE_INPUTS);
