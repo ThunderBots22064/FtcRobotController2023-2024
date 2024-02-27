@@ -6,6 +6,7 @@ import com.arcrobotics.ftclib.gamepad.GamepadKeys;
 
 import org.firstinspires.ftc.teamcode.CommandCode.Subsystems.DrivetrainSubsystem;
 import org.firstinspires.ftc.teamcode.CommandCode.Subsystems.ImuSubsystem;
+import org.firstinspires.ftc.robotcore.external.Telemetry;
 
 import java.lang.Math;
 
@@ -16,16 +17,20 @@ public class DriveRobot extends CommandBase {
     private final ImuSubsystem imu;
     private final GamepadEx pad;
 
+    Telemetry telemetry;
+
     /**
      * A command for controlling the robot drivetrain
      * @param pad the gamepad
      * @param drivetrain the drivetrain subsystem
      * @param imu the IMU subsystem
      */
-    public DriveRobot(GamepadEx pad, DrivetrainSubsystem drivetrain, ImuSubsystem imu) {
+    public MoveRobot(GamepadEx pad, DrivetrainSubsystem drivetrain, ImuSubsystem imu, Telemetry telemetry) {
         this.pad = pad;
         this.drivetrain = drivetrain;
         this.imu = imu;
+
+        this.telemetry = telemetry;
 
         addRequirements(drivetrain);
         addRequirements(imu);
@@ -39,7 +44,7 @@ public class DriveRobot extends CommandBase {
         double rightTrigger = pad.getTrigger(GamepadKeys.Trigger.RIGHT_TRIGGER);
 
         if (leftTrigger >= CONTROLLER.TRIGGER_DEADZONE || rightTrigger >= CONTROLLER.TRIGGER_DEADZONE) {
-            turn = leftTrigger > rightTrigger ? -drivetrain.getSpeed() : drivetrain.getSpeed();
+            turn = leftTrigger > rightTrigger ? -1.0 : 1.0;
         }
         
         double strafe = pad.getLeftX();
@@ -47,15 +52,19 @@ public class DriveRobot extends CommandBase {
             strafe = 0.0;
         }
 
-        double forward = pad.getRightY();
+        double forward = -pad.getRightY();
         if (Math.abs(forward) < CONTROLLER.STICK_DEADZONE) {
             forward = 0.0;
         }
 
+        telemetry.addData("IMU FROM MOVE: ", imu.getHeading());
+        telemetry.addData("RAW IMU FROM MOVE: ", imu.getHeadingRaw());
+        telemetry.update();
+
         if (pad.getButton(GamepadKeys.Button.B)) {
-            drivetrain.driveFieldCentric(strafe, forward, turn, CONTROLLER.SQUARE_INPUTS);
+            drivetrain.driveRobotCentric(strafe, forward, turn, CONTROLLER.SQUARE_INPUTS);
         } else {
-            drivetrain.driveRobotCentric(strafe, forward, turn, imu.getHeading(), CONTROLLER.SQUARE_INPUTS);
+            drivetrain.driveFieldCentric(strafe, forward, turn, imu.getHeading(), CONTROLLER.SQUARE_INPUTS);
         }
     }
 

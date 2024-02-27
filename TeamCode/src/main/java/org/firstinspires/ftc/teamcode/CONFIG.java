@@ -20,11 +20,11 @@ public final class CONFIG {
 	
     public final static class DRIVETRAIN {
         // The percent motor speed for the drivetrain
-        public final static float SPEED_DEF = 0.50f;
+        public final static float SPEED_DEF = 0.70f;
         // The minimum speed of the drivetrain
-        public final static float SPEED_MIN = 0.25f;
+        public final static float SPEED_MIN = 0.50f;
         // The maximum speed of the drivetrain
-        public final static float SPEED_MAX = 0.80f;
+        public final static float SPEED_MAX = 0.90f;
         // The percent speed the robot changes when speed is adjusted
         public final static float SPEED_VAR = 0.10f;
 

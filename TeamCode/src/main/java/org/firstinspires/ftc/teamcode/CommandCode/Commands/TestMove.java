@@ -2,13 +2,10 @@ package org.firstinspires.ftc.teamcode.CommandCode.Commands;
 
 import com.arcrobotics.ftclib.command.CommandBase;
 import com.arcrobotics.ftclib.gamepad.GamepadEx;
-import com.arcrobotics.ftclib.gamepad.GamepadKeys;
 
 import org.firstinspires.ftc.teamcode.CommandCode.Subsystems.DrivetrainSubsystem;
 import org.firstinspires.ftc.teamcode.CommandCode.Subsystems.ImuSubsystem;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
-
-import org.firstinspires.ftc.teamcode.CONFIG.CONTROLLER;
 
 public class TestMove extends CommandBase {
     private final DrivetrainSubsystem drivetrain;
@@ -41,6 +38,8 @@ public class TestMove extends CommandBase {
         telemetry.addData("Strafe Value: ", strafe);
         telemetry.addData("Vertical Value: ", vertical);
         telemetry.addData("Turn Value: ", turn);
+
+        telemetry.addData("Right Y: ", pad.getRightY());
 
         telemetry.addData("Speed: ", drivetrain.getSpeed());
 
