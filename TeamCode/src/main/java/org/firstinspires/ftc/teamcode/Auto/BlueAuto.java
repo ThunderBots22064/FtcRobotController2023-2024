@@ -31,18 +31,18 @@ package org.firstinspires.ftc.teamcode.Auto;
 
 import static org.firstinspires.ftc.teamcode.OldCode.OldTeleOp.intToDir;
 
-import android.os.Environment;
+import android.os.Build;
 import android.util.Size;
 
 import org.firstinspires.ftc.robotcore.external.JavaUtil;
-import org.firstinspires.ftc.teamcode.Auto.CONFIGAuto;
+//import org.firstinspires.ftc.teamcode.Auto.CONFIGAuto;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.hardware.CRServo;
+//import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+//import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.HardwareMap;
+//import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.BuiltinCameraDirection;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
@@ -60,7 +60,7 @@ import java.util.List;
  * Use Android Studio to Copy this Class, and Paste it into your team's code folder with a new name.
  * Remove or comment out the @Disabled line to add this OpMode to the Driver Station OpMode list.
  */
-@Autonomous(name = "Concept: TensorFlow Object Detection", group = "Concept")
+@Autonomous(name = "BlueAuto", group = "Concept")
 //@Disabled
 public class BlueAuto extends LinearOpMode {
     /*** CONFIG PRESETS ***/
@@ -153,8 +153,6 @@ public class BlueAuto extends LinearOpMode {
         sleep((long) (time__in_seconds_ * 1000));
     }
 
-    boolean have_seen = false;
-
     @Override
     public void runOpMode() {
         // Setup motors
@@ -180,6 +178,7 @@ public class BlueAuto extends LinearOpMode {
         mtFR.setDirection(intToDir(CONFIG.DRIVETRAIN.FR_DIR));
         mtBL.setDirection(intToDir(CONFIG.DRIVETRAIN.BL_DIR));
         mtBR.setDirection(intToDir(CONFIG.DRIVETRAIN.BR_DIR));
+        boolean have_seen = false;
 
         initTfod();
 
@@ -192,7 +191,7 @@ public class BlueAuto extends LinearOpMode {
         if (opModeIsActive()) {
             // this is where run blocks would go if this was a block code
             forward(1, 0.25);
-            turn_Left(0.4, 0.25);
+            turn_Right(0.5, 0.25);
             stop(2);
 
             while (opModeIsActive()) {
@@ -205,32 +204,27 @@ public class BlueAuto extends LinearOpMode {
                 // Get a list of recognitions from TFOD.
                 List<Recognition> currentRecognitions = tfod.getRecognitions();
 
-                if (JavaUtil.listLength(currentRecognitions) == 0 && false == have_seen) {
+                if (JavaUtil.listLength(currentRecognitions) == 0 && !have_seen) {
                     telemetry.addData("TFOD", "I'm blind");
-                    visionPortal.stopStreaming();
-                    turn_Left(0.4, 0.25);
+                    turn_Left(0.5, 0.25);
                     stop(1);
-                    visionPortal.resumeStreaming();
                     telemetryTfod();
                     // Push telemetry to the Driver Station
                     telemetry.update();
-                } else
-                    for (Recognition recognition : currentRecognitions) {
-                        if (recognition.getLabel().equals("blue")) {
-                            telemetryTfod();
-                            // Push telemetry to the Driver Station.
-                            telemetry.update();
-                            telemetry.addData("TFOD", "I'm feeling blue");
-                            forward(0.75, 0.25);
-                            backward(0.25, 0.25);
-                            stop(1);
-                            have_seen = true;
-                        }
-                        break;
-                    }
+                } else if (JavaUtil.listLength(currentRecognitions) > 0) {
+                    telemetryTfod();
+                    // Push telemetry to the Driver Station.
+                    telemetry.update();
+                    telemetry.addData("TFOD", "I'm feeling blue");
+                    have_seen = true;
+                    forward(1.6, 0.25);
+                    backward(0.25, 0.25);
+                    stop(10);
+                }
+            }
             }
         }
-    }   // end runOpMode()
+    // end runOpMode()
 
     /**
      * Initialize the TensorFlow Object Detection processor.
@@ -269,7 +263,9 @@ public class BlueAuto extends LinearOpMode {
         }
 
         // Choose a camera resolution. Not all cameras support all resolutions.
-        builder.setCameraResolution(new Size(640, 480));
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            builder.setCameraResolution(new Size(640, 480));
+        }
 
         // Enable the RC preview (LiveView).  Set "false" to omit camera monitoring.
         builder.enableLiveView(true);
@@ -289,7 +285,7 @@ public class BlueAuto extends LinearOpMode {
         visionPortal = builder.build();
 
         // Set confidence threshold for TFOD recognitions, at any time.
-        tfod.setMinResultConfidence(0.90f);
+        tfod.setMinResultConfidence(0.95f);
 
         // Disable or re-enable the TFOD processor at any time.
         //visionPortal.setProcessorEnabled(tfod, true);
