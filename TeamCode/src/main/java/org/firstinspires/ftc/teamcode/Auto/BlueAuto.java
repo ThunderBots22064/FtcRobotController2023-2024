@@ -153,6 +153,8 @@ public class BlueAuto extends LinearOpMode {
         sleep((long) (time__in_seconds_ * 1000));
     }
 
+    boolean have_seen = false;
+
     @Override
     public void runOpMode() {
         // Setup motors
@@ -178,7 +180,6 @@ public class BlueAuto extends LinearOpMode {
         mtFR.setDirection(intToDir(CONFIG.DRIVETRAIN.FR_DIR));
         mtBL.setDirection(intToDir(CONFIG.DRIVETRAIN.BL_DIR));
         mtBR.setDirection(intToDir(CONFIG.DRIVETRAIN.BR_DIR));
-        boolean have_seen = false;
 
         initTfod();
 
