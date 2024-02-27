@@ -120,7 +120,7 @@ public class Main extends CommandOpMode {
         }, hook));
 
         // Claw
-        new Trigger(new TriggerReader(pad2, GamepadKeys.Trigger.RIGHT_TRIGGER)::isDown)
+        new Trigger(new Trigger(() -> {return pad2.getTrigger(GamepadKeys.Trigger.RIGHT_TRIGGER) > CONFIG.CONTROLLER.TRIGGER_DEADZONE;})
         .whenActive(new InstantCommand(() -> {
             claw.grip();
         }, claw))
@@ -128,7 +128,7 @@ public class Main extends CommandOpMode {
             claw.stop();
         }, claw));
 
-        new Trigger(new TriggerReader(pad2, GamepadKeys.Trigger.LEFT_TRIGGER)::isDown)
+        new Trigger(new Trigger(() -> {return pad2.getTrigger(GamepadKeys.Trigger.LEFT_TRIGGER) > CONFIG.CONTROLLER.TRIGGER_DEADZONE;})
         .whenActive(new InstantCommand(() -> {
             claw.release();
         }, claw))
