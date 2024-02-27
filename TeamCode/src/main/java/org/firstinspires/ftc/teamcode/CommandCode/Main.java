@@ -7,7 +7,6 @@ import com.arcrobotics.ftclib.gamepad.GamepadKeys;
 import com.arcrobotics.ftclib.command.CommandOpMode;
 import com.arcrobotics.ftclib.command.InstantCommand;
 import com.arcrobotics.ftclib.command.RunCommand;
-import com.arcrobotics.ftclib.gamepad.TriggerReader;
 
 import com.qualcomm.robotcore.eventloop.opmode.*;
 
