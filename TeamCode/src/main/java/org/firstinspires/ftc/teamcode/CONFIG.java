@@ -104,7 +104,7 @@ public final class CONFIG {
 	        // K Derivative Coefficient
 	        public final static float Kd = 0.20f;
 	        // Clamp for maximum value PID can use (+ and -)
-	        public final static float CLAMP = 0.20f;
+	        public final static float CLAMP = 0.70f;
 
             // The number of ticks between corrections, control hub runs at about 60 Hz
             public final static int TICKS = 30;
