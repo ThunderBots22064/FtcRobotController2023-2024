@@ -60,8 +60,8 @@ public class DriveRobot extends CommandBase {
         }
 
         double vertical = -verticalCtrl.getAsDouble();
-        if (Math.abs(forward) < CONTROLLER.STICK_DEADZONE) {
-            forward = 0.0;
+        if (Math.abs(vertical) < CONTROLLER.STICK_DEADZONE) {
+            vertical = 0.0;
         }
 
         telemetry.addData("IMU FROM MOVE: ", imu.getHeading());
@@ -69,9 +69,9 @@ public class DriveRobot extends CommandBase {
         telemetry.update();
 
         if (pad.getButton(GamepadKeys.Button.B)) {
-            drivetrain.driveRobotCentric(strafe, forward, turn, CONTROLLER.SQUARE_INPUTS);
+            drivetrain.driveRobotCentric(strafe, vertical, turn, CONTROLLER.SQUARE_INPUTS);
         } else {
-            drivetrain.driveFieldCentric(strafe, forward, turn, imu.getHeading(), CONTROLLER.SQUARE_INPUTS);
+            drivetrain.driveFieldCentric(strafe, vertical, turn, imu.getHeading(), CONTROLLER.SQUARE_INPUTS);
         }
     }
 
