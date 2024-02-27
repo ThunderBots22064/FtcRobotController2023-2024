@@ -41,6 +41,7 @@ public class DriveRobot extends CommandBase {
     @Override
     public void execute() {
         double turn = 0.0;
+        double heading = pad.getButton(GamepadKeys.Button.B) ? 0.0 : imu.getHeading();
 
         double leftTrigger = pad.getTrigger(GamepadKeys.Trigger.LEFT_TRIGGER);
         double rightTrigger = pad.getTrigger(GamepadKeys.Trigger.RIGHT_TRIGGER);
@@ -59,11 +60,7 @@ public class DriveRobot extends CommandBase {
             vertical = 0.0;
         }
 
-        if (pad.getButton(GamepadKeys.Button.B)) {
-            drivetrain.driveRobotCentric(strafe, vertical, turn, CONTROLLER.SQUARE_INPUTS);
-        } else {
-            drivetrain.driveFieldCentric(strafe, vertical, turn, imu.getHeading(), CONTROLLER.SQUARE_INPUTS);
-        }
+        drivetrain.driveFieldCentric(strafe, vertical, turn, heading, CONTROLLER.SQUARE_INPUTS);
     }
 
     @Override
