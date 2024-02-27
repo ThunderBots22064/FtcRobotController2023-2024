@@ -10,11 +10,10 @@ import org.firstinspires.ftc.teamcode.CONFIG.DRIVETRAIN;
 
 public class DrivetrainSubsystem extends SubsystemBase {
     private final MecanumDrive drivetrain;
+    final Motor mtFL, mtFR, mtBL, mtBR;
     private float speed;
 
     public DrivetrainSubsystem(HardwareMap hardMap) {
-        final Motor mtFL, mtFR, mtBL, mtBR;
-
         mtFL = new Motor(hardMap, DRIVETRAIN.FRONT_LEFT_DEVICE);
         mtFR = new Motor(hardMap, DRIVETRAIN.FRONT_RIGHT_DEVICE);
         mtBL = new Motor(hardMap, DRIVETRAIN.BACK_LEFT_DEVICE);
