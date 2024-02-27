@@ -13,6 +13,9 @@ public final class CONFIG {
 
         // Whether or not the drivetrain inputs should be squared allowing for finer control
         public final static boolean SQUARE_INPUTS = true;
+
+        // Teagan Mode - Reverses the drivetrain stick controls, Left Y + Right X instead of Left X + Right Y
+        public final static boolean TEAGAN_MODE = true;
     }
 	
     public final static class DRIVETRAIN {
@@ -91,7 +94,7 @@ public final class CONFIG {
             public final static String DEVICE2 = "Arm2";
 	        public final static DcMotorSimple.Direction DIR1 = DcMotorSimple.Direction.FORWARD;
             public final static DcMotorSimple.Direction DIR2 = DcMotorSimple.Direction.REVERSE;
-	        public final static float SPEED = 0.20f;
+	        public final static float SPEED = 0.60f;
 			
 			/*--- PID Control for Arm ---*/
 	        // K Proportional Coefficient
