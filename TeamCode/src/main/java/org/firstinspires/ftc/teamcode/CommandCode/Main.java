@@ -41,14 +41,18 @@ public class Main extends CommandOpMode {
         pad2 = new GamepadEx(gamepad2);
 
         // --- Defaults ---
+        // Arm
         register(arm);
         arm.setDefaultCommand(new HoldArm(arm, CONFIG.CONTROL_SURFACES.ARM.TICKS)); 
         
+        /*
+        // IMU
         register(imu);
         imu.setDefaultCommand(new RunCommand(() -> {
             telemetry.addData("IMU Heading: ", imu.getHeading());
             telemetry.update();
-        }, imu));
+        }, imu)); 
+        */
 
         // --- Gamepad1 ---
         // Drive
