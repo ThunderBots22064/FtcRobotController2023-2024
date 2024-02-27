@@ -37,7 +37,7 @@ public class DriveRobot extends CommandBase {
         this.telemetry = telemetry;
 
         horizontalCtrl = CONTROLLER.TEAGAN_MODE ? pad::getRightX : pad::getLeftX;
-        verticalCtrl = CONTROLLER.TEAGAN_MODE ? pad::getLeftY : pad::getRightY;
+        verticalCtrl = CONTROLLER.TEAGAN_MODE ? () -> {return -pad.getLeftY();} : pad::getRightY;
 
         addRequirements(drivetrain);
         addRequirements(imu);
