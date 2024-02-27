@@ -94,7 +94,7 @@ public final class CONFIG {
             public final static String DEVICE2 = "Arm2";
 	        public final static DcMotorSimple.Direction DIR1 = DcMotorSimple.Direction.FORWARD;
             public final static DcMotorSimple.Direction DIR2 = DcMotorSimple.Direction.REVERSE;
-	        public final static float SPEED = 0.60f;
+	        public final static float SPEED = 0.75f;
 			
 			/*--- PID Control for Arm ---*/
 	        // K Proportional Coefficient
