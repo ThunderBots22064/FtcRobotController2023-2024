@@ -25,7 +25,7 @@ public class DriveRobot extends CommandBase {
      * @param drivetrain the drivetrain subsystem
      * @param imu the IMU subsystem
      */
-    public MoveRobot(GamepadEx pad, DrivetrainSubsystem drivetrain, ImuSubsystem imu, Telemetry telemetry) {
+    public DriveRobot(GamepadEx pad, DrivetrainSubsystem drivetrain, ImuSubsystem imu, Telemetry telemetry) {
         this.pad = pad;
         this.drivetrain = drivetrain;
         this.imu = imu;
