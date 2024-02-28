@@ -8,6 +8,7 @@ import org.firstinspires.ftc.teamcode.CONFIG;
 import java.lang.Math;
 
 @TeleOp
+@Deprecated
 public class OldTeleOp extends OpMode {
     /*** CONFIG PRESETS ***/
     float SPEED_DEF = CONFIG.DRIVETRAIN.SPEED_DEF;
@@ -18,16 +19,15 @@ public class OldTeleOp extends OpMode {
     
     float STICK_DEADZONE = CONFIG.CONTROLLER.STICK_DEADZONE;
     float TRIGGER_DEADZONE = CONFIG.CONTROLLER.TRIGGER_DEADZONE;
-    int DRIVE_MODE = CONFIG.CONTROLLER.DRIVE_MODE;
     
-    float HOOK_SPEED_UP = CONFIG.CONTROL_SURFACES.HOOK.HOOK_SPEED_UP;
-    float HOOK_SPEED_DOWN = CONFIG.CONTROL_SURFACES.HOOK.HOOK_SPEED_DOWN;
-    float ARM_SPEED = CONFIG.CONTROL_SURFACES.ARM.ARM_SPEED;
+    float HOOK_SPEED_UP = CONFIG.CONTROL_SURFACES.HOOK.SPEED_UP;
+    float HOOK_SPEED_DOWN = CONFIG.CONTROL_SURFACES.HOOK.SPEED_DOWN;
+    float ARM_SPEED = CONFIG.CONTROL_SURFACES.ARM.SPEED;
 
-    // Power Matrixes for different modes
-    public final static float[][][] DRIVE_ARRAY = {
+    // Power Matrixes for driving
+    public final static float[][] DRIVE_ARRAY = {
         // Mecanum Driving
-        { // Left-Stick Up
+        // Left-Stick Up
             {1f, 1f, 
             1f, 1f},
 
@@ -50,7 +50,6 @@ public class OldTeleOp extends OpMode {
             // Left Trigger
             {-1f, 1f, 
             -1f, 1f}
-        }
     };
 
     // To make the joysticks easier to understand there are 4 boxes placed on each joystick (Imaginary)
@@ -142,37 +141,37 @@ public class OldTeleOp extends OpMode {
         mtBL.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         mtBR.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         
-        mtFL.setDirection(intToDir(CONFIG.DRIVETRAIN.FL_DIR));
-        mtFR.setDirection(intToDir(CONFIG.DRIVETRAIN.FR_DIR));
-        mtBL.setDirection(intToDir(CONFIG.DRIVETRAIN.BL_DIR));
-        mtBR.setDirection(intToDir(CONFIG.DRIVETRAIN.BR_DIR));
+        mtFL.setDirection(CONFIG.DRIVETRAIN.FL_DIR);
+        mtFR.setDirection(CONFIG.DRIVETRAIN.FR_DIR);
+        mtBL.setDirection(CONFIG.DRIVETRAIN.BL_DIR);
+        mtBR.setDirection(CONFIG.DRIVETRAIN.BR_DIR);
 
         // Drone Servo
-        svDrone = hardwareMap.get(CRServo.class, CONFIG.CONTROL_SURFACES.DRONE.DRONE_DEVICE);
-        svDrone.setDirection(intToDir(CONFIG.CONTROL_SURFACES.DRONE.DRONE_DIR));
+        svDrone = hardwareMap.get(CRServo.class, CONFIG.CONTROL_SURFACES.DRONE.DEVICE);
+        svDrone.setDirection(CONFIG.CONTROL_SURFACES.DRONE.DIR);
         
         // Hook Motor
-        mtHook = hardwareMap.get(DcMotor.class, CONFIG.CONTROL_SURFACES.HOOK.HOOK_DEVICE);
+        mtHook = hardwareMap.get(DcMotor.class, CONFIG.CONTROL_SURFACES.HOOK.DEVICE);
         // Reset Hook Encoder
         mtHook.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         mtHook.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         
         // Arm Motors
-        mtArm1 = hardwareMap.get(DcMotor.class, CONFIG.CONTROL_SURFACES.ARM.ARM1_DEVICE);
-        mtArm1.setDirection(intToDir(CONFIG.CONTROL_SURFACES.ARM.ARM1_DIR));
+        mtArm1 = hardwareMap.get(DcMotor.class, CONFIG.CONTROL_SURFACES.ARM.DEVICE1);
+        mtArm1.setDirection(CONFIG.CONTROL_SURFACES.ARM.DIR1);
         mtArm1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         mtArm1.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
-        mtArm2 = hardwareMap.get(DcMotor.class, CONFIG.CONTROL_SURFACES.ARM.ARM2_DEVICE);
-        mtArm2.setDirection(intToDir(CONFIG.CONTROL_SURFACES.ARM.ARM2_DIR));
+        mtArm2 = hardwareMap.get(DcMotor.class, CONFIG.CONTROL_SURFACES.ARM.DEVICE2);
+        mtArm2.setDirection(CONFIG.CONTROL_SURFACES.ARM.DIR2);
         mtArm2.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         mtArm2.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         
 		// Claw Servos
-        svClaw1 = hardwareMap.get(CRServo.class, CONFIG.CONTROL_SURFACES.CLAW.CLAW1_DEVICE);
-        svClaw2 = hardwareMap.get(CRServo.class, CONFIG.CONTROL_SURFACES.CLAW.CLAW2_DEVICE);
-        svClaw1.setDirection(intToDir(CONFIG.CONTROL_SURFACES.CLAW.CLAW1_DIR));
-        svClaw2.setDirection(intToDir(CONFIG.CONTROL_SURFACES.CLAW.CLAW2_DIR));
+        svClaw1 = hardwareMap.get(CRServo.class, CONFIG.CONTROL_SURFACES.CLAW.DEVICE1);
+        svClaw2 = hardwareMap.get(CRServo.class, CONFIG.CONTROL_SURFACES.CLAW.DEVICE2);
+        svClaw1.setDirection(CONFIG.CONTROL_SURFACES.CLAW.DIR1);
+        svClaw2.setDirection(CONFIG.CONTROL_SURFACES.CLAW.DIR2);
     }
 
     public void loop() {
@@ -237,7 +236,7 @@ public class OldTeleOp extends OpMode {
             expecArmPos = armPos;
             updateTick = 0;
         } else {
-            if (!gamepad2.b && updateTick > 120) {
+            if (!gamepad2.b && updateTick > 30) {
                 int error = expecArmPos - armPos;
                 armProp = error * CONFIG.CONTROL_SURFACES.ARM.Kp;
                 armInteg += error * CONFIG.CONTROL_SURFACES.ARM.Ki;
@@ -253,7 +252,7 @@ public class OldTeleOp extends OpMode {
                 mtArm1.setPower(total);
                 mtArm2.setPower(total);
                 updateTick = 0;
-            } else {
+            } else if (gamepad2.b) {
                 mtArm1.setPower(0);
                 mtArm2.setPower(0);
             }
@@ -291,29 +290,29 @@ public class OldTeleOp extends OpMode {
         // Left joystick controls horizontal strafing movement
         if (lYBox != 0) {
             if (lYBox == 1) {
-                powMat = addMat(powMat, DRIVE_ARRAY[DRIVE_MODE][0]);
+                powMat = addMat(powMat, DRIVE_ARRAY[0]);
             }
             else if (lYBox == -1) {
-                powMat = addMat(powMat, DRIVE_ARRAY[DRIVE_MODE][1]);
+                powMat = addMat(powMat, DRIVE_ARRAY[1]);
             }
         } 
         // Right joystick controls vertical forward/back movement
         if (rXBox != 0) {
             if (rXBox == 1) {
-                powMat = addMat(powMat, DRIVE_ARRAY[DRIVE_MODE][2]);
+                powMat = addMat(powMat, DRIVE_ARRAY[2]);
             }
             else if (rXBox == -1) {
-                powMat = addMat(powMat, DRIVE_ARRAY[DRIVE_MODE][3]);
+                powMat = addMat(powMat, DRIVE_ARRAY[3]);
             }
         }
 
         // Right Trigger turns clockwise
         if (gamepad1.right_trigger > TRIGGER_DEADZONE) {
-            powMat = addMat(powMat, DRIVE_ARRAY[DRIVE_MODE][4]);
+            powMat = addMat(powMat, DRIVE_ARRAY[4]);
         }
         // Left Trigger turns counterclockwise
         else if (gamepad1.left_trigger > TRIGGER_DEADZONE) {
-            powMat = addMat(powMat, DRIVE_ARRAY[DRIVE_MODE][5]);
+            powMat = addMat(powMat, DRIVE_ARRAY[5]);
         }
 
         // Left-Bumper Decreases Speed by SPEED_VAR
@@ -423,10 +422,6 @@ public class OldTeleOp extends OpMode {
             return 1;
         }
         return 0;
-    }
-
-    public static DcMotorSimple.Direction intToDir(int dir) {
-        return (dir == 1) ? DcMotorSimple.Direction.FORWARD : DcMotorSimple.Direction.REVERSE;
     }
     
     public static void setArr(float[] set, float[] get) {
