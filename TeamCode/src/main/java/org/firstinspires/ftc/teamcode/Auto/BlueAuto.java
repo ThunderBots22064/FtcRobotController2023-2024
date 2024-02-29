@@ -29,8 +29,6 @@
 
 package org.firstinspires.ftc.teamcode.Auto;
 
-import static org.firstinspires.ftc.teamcode.OldCode.OldTeleOp.intToDir;
-
 import android.os.Build;
 import android.util.Size;
 
@@ -47,7 +45,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.BuiltinCameraDirection;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
-import org.firstinspires.ftc.teamcode.OldCode.CONFIG;
+import org.firstinspires.ftc.teamcode.CONFIG;
 import org.firstinspires.ftc.vision.VisionPortal;
 import org.firstinspires.ftc.vision.tfod.TfodProcessor;
 
@@ -176,10 +174,10 @@ public class BlueAuto extends LinearOpMode {
         mtBL.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         mtBR.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
-        mtFL.setDirection(intToDir(CONFIG.DRIVETRAIN.FL_DIR));
-        mtFR.setDirection(intToDir(CONFIG.DRIVETRAIN.FR_DIR));
-        mtBL.setDirection(intToDir(CONFIG.DRIVETRAIN.BL_DIR));
-        mtBR.setDirection(intToDir(CONFIG.DRIVETRAIN.BR_DIR));
+        mtFL.setDirection(CONFIG.DRIVETRAIN.FL_DIR);
+        mtFR.setDirection(CONFIG.DRIVETRAIN.FR_DIR);
+        mtBL.setDirection(CONFIG.DRIVETRAIN.BL_DIR);
+        mtBR.setDirection(CONFIG.DRIVETRAIN.BR_DIR);
 
         initTfod();
 
