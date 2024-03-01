@@ -33,7 +33,6 @@ import android.os.Build;
 import android.util.Size;
 
 import org.firstinspires.ftc.robotcore.external.JavaUtil;
-//import org.firstinspires.ftc.teamcode.Auto.CONFIGAuto;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
