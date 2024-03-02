@@ -94,17 +94,17 @@ public final class CONFIG {
             public final static String DEVICE2 = "Arm2";
 	        public final static DcMotorSimple.Direction DIR1 = DcMotorSimple.Direction.FORWARD;
             public final static DcMotorSimple.Direction DIR2 = DcMotorSimple.Direction.REVERSE;
-	        public final static float SPEED = 0.75f;
+	        public final static float SPEED = 0.25f;
 			
 			/*--- PID Control for Arm ---*/
 	        // K Proportional Coefficient
-	        public final static float Kp = 0.15f;
+	        public final static float Kp = 0.25f;
 	        // K Integral Coefficient
 	        public final static float Ki = 0.05f;
 	        // K Derivative Coefficient
 	        public final static float Kd = 0.20f;
 	        // Clamp for maximum value PID can use (+ and -)
-	        public final static float CLAMP = 0.70f;
+	        public final static float CLAMP = 0.40f;
 
             // The number of ticks between corrections, control hub runs at about 60 Hz
             public final static int TICKS = 30;

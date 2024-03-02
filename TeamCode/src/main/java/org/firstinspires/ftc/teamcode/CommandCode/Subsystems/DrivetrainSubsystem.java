@@ -79,6 +79,17 @@ public class DrivetrainSubsystem extends SubsystemBase {
     }
 
     /**
+     * Gets the drivetrain's encoders
+     * @return an array of encoder values in the order, front-left, front-right, back-left, back-right
+     */
+    public double[] getEncoders() {
+        return new double[] {
+                mtFL.getCurrentPosition(), mtFR.getCurrentPosition(),
+                mtBL.getCurrentPosition(), mtBR.getCurrentPosition()
+        };
+    }
+
+    /**
      * Increases the percent speed of the robot given that it wont exceed the limit speed
      */
     public void increaseSpeed() {

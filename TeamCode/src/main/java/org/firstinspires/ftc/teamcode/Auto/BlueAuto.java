@@ -33,7 +33,6 @@ import android.os.Build;
 import android.util.Size;
 
 import org.firstinspires.ftc.robotcore.external.JavaUtil;
-//import org.firstinspires.ftc.teamcode.Auto.CONFIGAuto;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
@@ -51,15 +50,7 @@ import org.firstinspires.ftc.vision.tfod.TfodProcessor;
 
 import java.util.List;
 
-/*
- * This OpMode illustrates the basics of TensorFlow Object Detection,
- * including Java Builder structures for specifying Vision parameters.
- *
- * Use Android Studio to Copy this Class, and Paste it into your team's code folder with a new name.
- * Remove or comment out the @Disabled line to add this OpMode to the Driver Station OpMode list.
- */
 @Autonomous(name = "BlueAuto", group = "Concept")
-//@Disabled
 public class BlueAuto extends LinearOpMode {
     /*** CONFIG PRESETS ***/
     /* from old config, commented out bc not in use currently
