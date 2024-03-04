@@ -23,7 +23,6 @@ public class Main extends CommandOpMode {
     DroneSubsystem drone;
     HookSubsystem hook;
     ImuSubsystem imu;
-
     GamepadEx pad1;
     GamepadEx pad2;
 

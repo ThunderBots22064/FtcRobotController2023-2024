@@ -19,6 +19,9 @@ public class ArmSubsystem extends SubsystemBase {
 
         mtArm1.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         mtArm2.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+
+        mtArm1.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        mtArm2.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
     }
 
     public void raise() {

@@ -52,6 +52,17 @@ public class DrivetrainSubsystem extends SubsystemBase {
     }
 
     /**
+     * Controls the robot relative to the robot itself without scaling by the drivetrain speeds
+     * @param strafeSpeed the horizontal speed (+ = Right, - = Left)
+     * @param forwardSpeed the vertical speed (+ = Forward, - = Backward)
+     * @param turnSpeed the rotation speed (+ = Clockwise, - = Anti-Clockwise)
+     * @param squareInputs whether the inputs should be squared to allow for finer controller
+     */
+    public void driveRobotCentricRaw(double strafeSpeed, double forwardSpeed, double turnSpeed, boolean squareInputs) {
+        drivetrain.driveRobotCentric(strafeSpeed, forwardSpeed, turnSpeed, squareInputs);
+    }
+
+    /**
      * Controls the robot relative to the field
      * @param strafeSpeed the horizontal speed (+ = Right of controller, - = Left of controller)
      * @param forwardSpeed the vertical speed (+ = Away from controller, - = Towards controller)

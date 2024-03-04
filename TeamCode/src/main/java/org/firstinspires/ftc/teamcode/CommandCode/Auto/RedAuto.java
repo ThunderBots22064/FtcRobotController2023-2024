@@ -1,4 +1,19 @@
-package org.firstinspires.ftc.teamcode.Auto;
+package org.firstinspires.ftc.teamcode.CommandCode.Auto;
+
+import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.util.ElapsedTime;
+//import com.arcrobotics.ftclib.command.CommandOpMode;
+//import com.arcrobotics.ftclib.command.InstantCommand;
+//import com.arcrobotics.ftclib.command.RunCommand;
+
+//import com.qualcomm.robotcore.eventloop.opmode.*;
+
+import org.firstinspires.ftc.teamcode.CONFIG;
+//import org.firstinspires.ftc.teamcode.CommandCode.Commands.*;
+import org.firstinspires.ftc.teamcode.CommandCode.Subsystems.*;
+import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.hardware.*;
 
 import android.os.Environment;
 import android.util.Size;
@@ -14,22 +29,22 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.BuiltinCameraDirection;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
+import org.firstinspires.ftc.robotcore.external.hardware.camera.controls.ExposureControl;
 import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
 import org.firstinspires.ftc.teamcode.CONFIG;
 import org.firstinspires.ftc.vision.VisionPortal;
 import org.firstinspires.ftc.vision.tfod.TfodProcessor;
 
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 @Autonomous(name = "RedAuto", group = "Concept")
 //@Disabled
 public class RedAuto extends LinearOpMode {
     /*** CONFIG PRESETS ***/
     // Drivetrain motors
-    DcMotor mtFL = null; // Front Left
-    DcMotor mtFR = null; // Front Right
-    DcMotor mtBL = null; // Back Left
-    DcMotor mtBR = null; // Back Right
+    ArmSubsystem arm;
+    DrivetrainSubsystem drivetrain;
 
     private static final boolean USE_WEBCAM = true;  // true for webcam, false for phone camera
 
@@ -54,78 +69,15 @@ public class RedAuto extends LinearOpMode {
      */
     private VisionPortal visionPortal;
 
-    //Stop function to stop power to wheels for inputted time (in seconds)
-    private void stop(int time__in_seconds_) {
-        mtBL.setPower(0);
-        mtBR.setPower(0);
-        mtFL.setPower(0);
-        mtFR.setPower(0);
-        sleep(time__in_seconds_ * 1000);
-    }
-
-    // Forward function to move wheels forward for inputted time and with inputted power
-    private void forward(double time__in_seconds_, double power) {
-        mtBL.setPower(power);
-        mtBR.setPower(power);
-        mtFL.setPower(power);
-        mtFR.setPower(power);
-        sleep((long) (time__in_seconds_ * 1000));
-    }
-
-    // Backward function to move wheels backward for inputted time and with inputted power
-    private void backward(double time__in_seconds_, double power) {
-        mtBL.setPower(-power);
-        mtBR.setPower(-power);
-        mtFR.setPower(-power);
-        mtFL.setPower(-power);
-        sleep((long) (time__in_seconds_ * 1000));
-    }
-
-    // Turn left function to turn left for inputted time and with inputted power
-    private void turn_Left(double time__in_seconds_, double power) {
-        mtBL.setPower(-power);
-        mtBR.setPower(power);
-        mtFR.setPower(power);
-        mtFL.setPower(-power);
-        sleep((long) (time__in_seconds_ * 1000));
-    }
-
-    // Turn right function to turn right for inputted time and with inputted power
-    private void turn_Right(double time__in_seconds_, double power) {
-        mtBL.setPower(power);
-        mtBR.setPower(-power);
-        mtFR.setPower(-power);
-        mtFL.setPower(power);
-        sleep((long) (time__in_seconds_ * 1000));
-    }
+    ExposureControl exposureControl;
 
     boolean have_seen = false;
 
     @Override
     public void runOpMode() {
-        // Setup motors
-        // Motors are first identified with the 'mt' (Motor)
-        // They're then identified with F (Front) or B (Back)
-        // Next the side is identified with L (Left) or R (Right)
-        mtFL = hardwareMap.get(DcMotor.class, CONFIG.DRIVETRAIN.FRONT_LEFT_DEVICE);
-        mtFR = hardwareMap.get(DcMotor.class, CONFIG.DRIVETRAIN.FRONT_RIGHT_DEVICE);
-        mtBL = hardwareMap.get(DcMotor.class, CONFIG.DRIVETRAIN.BACK_LEFT_DEVICE);
-        mtBR = hardwareMap.get(DcMotor.class, CONFIG.DRIVETRAIN.BACK_RIGHT_DEVICE);
-
-        mtFL.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        mtFR.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        mtBL.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        mtBR.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-
-        mtFL.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        mtFR.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        mtBL.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        mtBR.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-
-        mtFL.setDirection(CONFIG.DRIVETRAIN.FL_DIR);
-        mtFR.setDirection(CONFIG.DRIVETRAIN.FR_DIR);
-        mtBL.setDirection(CONFIG.DRIVETRAIN.BL_DIR);
-        mtBR.setDirection(CONFIG.DRIVETRAIN.BR_DIR);
+        exposureControl = visionPortal.getCameraControl(ExposureControl.class);
+        exposureControl.setMode(ExposureControl.Mode.Manual);
+        exposureControl.setExposure(30, TimeUnit.MILLISECONDS);
 
         initTfod();
 
@@ -136,7 +88,13 @@ public class RedAuto extends LinearOpMode {
         waitForStart();
 
         if (opModeIsActive()) {
+            arm = new ArmSubsystem(hardwareMap);
+            drivetrain = new DrivetrainSubsystem(hardwareMap);
+
             // this is where run blocks would go if this was a block code
+            arm.raise();
+            sleep(250);
+            arm.stop();
             forward(1, 0.25);
             turn_Left(0.5, 0.25);
             stop(2);
@@ -263,4 +221,29 @@ public class RedAuto extends LinearOpMode {
 
     }   // end method telemetryTfod()
 
+    //Stop function to stop power to wheels for inputted time (in seconds)
+    private void stop(int time__in_seconds_) {
+        drivetrain.stop();
+        sleep(time__in_seconds_ * 1000);
+    }
+    // Forward function to move wheels forward for inputted time and with inputted power
+    private void forward(double time__in_seconds_, double power) {
+        drivetrain.driveRobotCentric(0, power, 0, false);
+        sleep((long) (time__in_seconds_ * 1000));
+    }
+    // Backward function to move wheels backward for inputted time and with inputted power
+    private void backward(double time__in_seconds_, double power){
+        drivetrain.driveRobotCentric(0, -power, 0, false);
+        sleep((long) (time__in_seconds_ * 1000));
+    }
+    // Turn left function to turn left for inputted time and with inputted power
+    private void turn_Left(double time__in_seconds_, double power) {
+        drivetrain.driveRobotCentric(0, 0, -power, false);
+        sleep((long) (time__in_seconds_ * 1000));
+    }
+    // Turn right function to turn right for inputted time and with inputted power
+    private void turn_Right(double time__in_seconds_, double power){
+        drivetrain.driveRobotCentric(0, 0, power, false);
+        sleep((long) (time__in_seconds_ * 1000));
+    }
 }   // end class
