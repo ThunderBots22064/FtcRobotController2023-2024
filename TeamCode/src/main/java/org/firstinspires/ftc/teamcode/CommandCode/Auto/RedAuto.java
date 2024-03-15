@@ -37,6 +37,7 @@ import org.firstinspires.ftc.vision.tfod.TfodProcessor;
 
 import java.util.List;
 import java.util.concurrent.TimeUnit;
+import org.firstinspires.ftc.robotcore.external.hardware.camera.controls.ExposureControl;
 
 @Autonomous(name = "RedAuto", group = "Concept")
 //@Disabled
@@ -69,15 +70,18 @@ public class RedAuto extends LinearOpMode {
      */
     private VisionPortal visionPortal;
 
-    ExposureControl exposureControl;
+    ExposureControl myExposureControl;
 
     boolean have_seen = false;
 
     @Override
     public void runOpMode() {
-        exposureControl = visionPortal.getCameraControl(ExposureControl.class);
-        exposureControl.setMode(ExposureControl.Mode.Manual);
-        exposureControl.setExposure(30, TimeUnit.MILLISECONDS);
+        myExposureControl = visionPortal.getCameraControl(ExposureControl.class);
+        myExposureControl.setMode(ExposureControl.Mode.Manual);
+        myExposureControl.setExposure(15, TimeUnit.MILLISECONDS);
+        //exposureControl = visionPortal.getCameraControl(ExposureControl.class);
+        //exposureControl.setMode(ExposureControl.Mode.Manual);
+        //exposureControl.setExposure(30, TimeUnit.MILLISECONDS);
 
         initTfod();
 

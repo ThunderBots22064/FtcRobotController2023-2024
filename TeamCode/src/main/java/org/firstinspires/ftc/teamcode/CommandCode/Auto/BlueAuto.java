@@ -38,6 +38,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 //import com.qualcomm.robotcore.eventloop.opmode.*;
 
+import org.firstinspires.ftc.robotcore.external.hardware.camera.controls.GainControl;
 import org.firstinspires.ftc.teamcode.CONFIG;
 //import org.firstinspires.ftc.teamcode.CommandCode.Commands.*;
 import org.firstinspires.ftc.teamcode.CommandCode.Subsystems.*;
@@ -54,6 +55,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 //import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 //import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.util.Range;
 //import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.BuiltinCameraDirection;
@@ -62,13 +64,34 @@ import org.firstinspires.ftc.robotcore.external.hardware.camera.controls.Exposur
 import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
 import org.firstinspires.ftc.teamcode.CONFIG;
 import org.firstinspires.ftc.vision.VisionPortal;
+import org.firstinspires.ftc.vision.apriltag.AprilTagDetection;
+import org.firstinspires.ftc.vision.apriltag.AprilTagProcessor;
 import org.firstinspires.ftc.vision.tfod.TfodProcessor;
 
 import java.util.List;
 import java.util.concurrent.TimeUnit;
+import org.firstinspires.ftc.robotcore.external.hardware.camera.controls.ExposureControl;
 
 @Autonomous(name = "BlueAuto", group = "Concept")
 public class BlueAuto extends LinearOpMode {
+   //ALL from ConceptAprilTagOptimizeExposure.java
+    private int     myExposure  ;
+    private int     minExposure ;
+    private int     maxExposure ;
+    private int     myGain      ;
+    private int     minGain ;
+    private int     maxGain ;
+
+    boolean thisExpUp = false;
+    boolean thisExpDn = false;
+    boolean thisGainUp = false;
+    boolean thisGainDn = false;
+
+    boolean lastExpUp = false;
+    boolean lastExpDn = false;
+    boolean lastGainUp = false;
+    boolean lastGainDn = false;
+
     /*** CONFIG PRESETS ***/
     /* from old config, commented out bc not in use currently
     float SPEED_DEF = CONFIG.DRIVETRAIN.SPEED_DEF;
@@ -103,8 +126,7 @@ public class BlueAuto extends LinearOpMode {
     /**
      * The variable to store our instance of the vision portal.
      */
-    private VisionPortal visionPortal;
-    ExposureControl myExposureControl;
+    private VisionPortal visionPortal = null;        // Used to manage the video source.
 
     boolean have_seen = false;
 
@@ -113,11 +135,13 @@ public class BlueAuto extends LinearOpMode {
         drivetrain = new DrivetrainSubsystem(hardwareMap);
         arm = new ArmSubsystem(hardwareMap);
 
-        ExposureControl MyExposureControl = visionPortal.getCameraControl(ExposureControl.class);
-        MyExposureControl.setMode(ExposureControl.Mode.Manual);
-        MyExposureControl.setExposure(30, TimeUnit.MILLISECONDS);
-
         initTfod();
+
+        // Establish Min and Max Gains and Exposure.  Then set a low exposure with high gain
+        getCameraSetting();
+        myExposure = Math.min(5, minExposure);
+        myGain = maxGain;
+        setManualExposure(myExposure, myGain);
 
         // Wait for the DS start button to be touched.
         telemetry.addData("DS preview on/off", "3 dots, Camera Stream");
@@ -135,14 +159,59 @@ public class BlueAuto extends LinearOpMode {
             stop(2);
 
             while (opModeIsActive()) {
+                    telemetry.addLine("Find lowest Exposure that gives reliable detection.");
+                    telemetry.addLine("Use Left bump/trig to adjust Exposure.");
+                    telemetry.addLine("Use Right bump/trig to adjust Gain.\n");
+
+                    // Display how many Recognitions made
+                    List<Recognition> currentRecognitions = tfod.getRecognitions();
+
+                    int numRecs = currentRecognitions.size();
+                    if (numRecs > 0 )
+                        telemetry.addData("Rec", "####### %d Detected  ######", currentRecognitions.size());
+                    else
+                        telemetry.addData("Rec", "----------- none - ----------");
+
+                    telemetry.addData("Exposure","%d  (%d - %d)", myExposure, minExposure, maxExposure);
+                    telemetry.addData("Gain","%d  (%d - %d)", myGain, minGain, maxGain);
+                    telemetry.update();
+
+                    // check to see if we need to change exposure or gain.
+                    thisExpUp = gamepad1.left_bumper;
+                    thisExpDn = gamepad1.left_trigger > 0.25;
+                    thisGainUp = gamepad1.right_bumper;
+                    thisGainDn = gamepad1.right_trigger > 0.25;
+
+                    // look for clicks to change exposure
+                    if (thisExpUp && !lastExpUp) {
+                        myExposure = Range.clip(myExposure + 1, minExposure, maxExposure);
+                        setManualExposure(myExposure, myGain);
+                    } else if (thisExpDn && !lastExpDn) {
+                        myExposure = Range.clip(myExposure - 1, minExposure, maxExposure);
+                        setManualExposure(myExposure, myGain);
+                    }
+
+                    // look for clicks to change the gain
+                    if (thisGainUp && !lastGainUp) {
+                        myGain = Range.clip(myGain + 1, minGain, maxGain );
+                        setManualExposure(myExposure, myGain);
+                    } else if (thisGainDn && !lastGainDn) {
+                        myGain = Range.clip(myGain - 1, minGain, maxGain );
+                        setManualExposure(myExposure, myGain);
+                    }
+
+                    lastExpUp = thisExpUp;
+                    lastExpDn = thisExpDn;
+                    lastGainUp = thisGainUp;
+                    lastGainDn = thisGainDn;
+
+                    sleep(20);
+
                 // this is where loop blocks would go if this was a block code
                 telemetryTfod();
 
                 // Push telemetry to the Driver Station.
                 telemetry.update();
-
-                // Get a list of recognitions from TFOD.
-                List<Recognition> currentRecognitions = tfod.getRecognitions();
 
                 if (JavaUtil.listLength(currentRecognitions) == 0 && !have_seen) {
                     telemetry.addData("TFOD", "I'm blind");
@@ -277,6 +346,83 @@ public class BlueAuto extends LinearOpMode {
     private void turn_Right(double time__in_seconds_, double power){
         drivetrain.driveRobotCentric(0, 0, power, false);
         sleep((long) (time__in_seconds_ * 1000));
+    }
+
+    /*
+       Manually set the camera gain and exposure.
+       Can only be called AFTER calling initAprilTag();
+       Returns true if controls are set.
+    */
+    private boolean    setManualExposure(int exposureMS, int gain) {
+        // Ensure Vision Portal has been setup.
+        if (visionPortal == null) {
+            return false;
+        }
+
+        // Wait for the camera to be open
+        if (visionPortal.getCameraState() != VisionPortal.CameraState.STREAMING) {
+            telemetry.addData("Camera", "Waiting");
+            telemetry.update();
+            while (!isStopRequested() && (visionPortal.getCameraState() != VisionPortal.CameraState.STREAMING)) {
+                sleep(20);
+            }
+            telemetry.addData("Camera", "Ready");
+            telemetry.update();
+        }
+
+        // Set camera controls unless we are stopping.
+        if (!isStopRequested())
+        {
+            // Set exposure.  Make sure we are in Manual Mode for these values to take effect.
+            ExposureControl exposureControl = visionPortal.getCameraControl(ExposureControl.class);
+            if (exposureControl.getMode() != ExposureControl.Mode.Manual) {
+                exposureControl.setMode(ExposureControl.Mode.Manual);
+                sleep(50);
+            }
+            exposureControl.setExposure((long)exposureMS, TimeUnit.MILLISECONDS);
+            sleep(20);
+
+            // Set Gain.
+            GainControl gainControl = visionPortal.getCameraControl(GainControl.class);
+            gainControl.setGain(gain);
+            sleep(20);
+            return (true);
+        } else {
+            return (false);
+        }
+    }
+
+    /*
+        Read this camera's minimum and maximum Exposure and Gain settings.
+        Can only be called AFTER calling initAprilTag();
+     */
+    private void getCameraSetting() {
+        // Ensure Vision Portal has been setup.
+        if (visionPortal == null) {
+            return;
+        }
+
+        // Wait for the camera to be open
+        if (visionPortal.getCameraState() != VisionPortal.CameraState.STREAMING) {
+            telemetry.addData("Camera", "Waiting");
+            telemetry.update();
+            while (!isStopRequested() && (visionPortal.getCameraState() != VisionPortal.CameraState.STREAMING)) {
+                sleep(20);
+            }
+            telemetry.addData("Camera", "Ready");
+            telemetry.update();
+        }
+
+        // Get camera control values unless we are stopping.
+        if (!isStopRequested()) {
+            ExposureControl exposureControl = visionPortal.getCameraControl(ExposureControl.class);
+            minExposure = (int)exposureControl.getMinExposure(TimeUnit.MILLISECONDS) + 1;
+            maxExposure = (int)exposureControl.getMaxExposure(TimeUnit.MILLISECONDS);
+
+            GainControl gainControl = visionPortal.getCameraControl(GainControl.class);
+            minGain = gainControl.getMinGain();
+            maxGain = gainControl.getMaxGain();
+        }
     }
 }   // end class
 
